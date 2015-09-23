@@ -62,9 +62,9 @@ public:
 		return valid_string(GetName()) && valid_string(GetSurname()) && valid_string(GetPatronymic()) && GetPoint();
 	}
 
-	bool SetName(char *name) {
-		if (valid_string(name)) {
-			this->name = name;
+	bool SetName(char *nam) {
+		if (valid_string(nam)) {
+			name = nam;
 			return 1;
 		} else {
 			return 0;
@@ -113,8 +113,8 @@ public:
 
 int main()
  {
-	Student student("sidor", "AZaz", "asdas", 3);
-	student.print_info();
+	Student *student = new Student("sidor", "AZaz", "asdas");
+	student->print_info();
 	return 0;
 }
 
