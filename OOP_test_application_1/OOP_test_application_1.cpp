@@ -121,16 +121,9 @@ class Group
 {
 	vector<Student> student;
 public:
-	Group()
-	{
-
-	}
-	~Group()
-	{
-
-	}
-	bool add_student(char *name, char *surname, char *patronymic, int points)
-	{
+	Group()	{}
+	~Group() {}
+	bool add_student(char *name, char *surname, char *patronymic, int points) {
 		Student stud(name, surname, patronymic, points);
 		if (stud.valid_student()) {
 			student.insert(student.end(), stud);
@@ -139,6 +132,70 @@ public:
 			return 0;
 		}
 	}
+	bool rem_student(int num) {
+		if (student.size() >= num && num >=0) {
+			student.erase(student.begin()+num);
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	void destroy() {
+		if (!student.empty()) {
+			student.clear();
+		}
+	}
+	float avg_point() {
+		int sum = 0;
+		for (int i = 0; i < student.size(); i++) {
+			sum += student[i].GetPoint();
+		}
+		return (float)sum / student.size();
+	}
+	void sort_sname() {
+		for (int i = 0; i < student.size() - 1 ; i++) {
+			for (int j = i; j < student.size() - 1; j++) {
+				int k = 0;
+				//проверка строк
+				do {
+					if (student[j].GetSurname()[k] == student[j+1].GetSurname()[k]) {
+						k++;
+					} else {
+						
+						if (student[j].GetSurname()[k] < student[j+1].GetSurname()[k]) {
+							k = 0;
+						} else {
+							k = -1;
+						}
+					}
+				} while (k > 0 && student[j].GetSurname()[k] != '\0' &&  student[j+1].GetSurname()[k] != '\0');
+				// к = 0 строки надо поменять местами
+				if (k == 0) {
+					Student stud = student[j];
+					student[j] = student[j+1];
+					student[j+1] = stud;
+				}
+			}
+		}
+	}
+	void sort_point() {
+		for (int i = 0; i < student.size() - 1 ; i++) {
+			for (int j = i; j < student.size() - 1; j++) {
+				if (student[j].GetPoint() < student[j+1].GetPoint()) {
+					Student stud = student[j];
+					student[j] = student[j+1];
+					student[j+1] = stud;
+				}
+			}
+		}
+	}
+	void print_group() {
+		for (int i = 0; i < student.size(); i++) {
+			student[i].print_info();
+		}
+		cout << endl;
+	}
+
 };
 
 int main()
@@ -147,20 +204,18 @@ int main()
 	//student.SetName("lox");
 	//student.print_info();
 	Group group;
-	group.add_student("sidor", "werwer", "zxcv", 3);
-	group.add_student("pidor", "ghkcvn", "ghhdf", 30);
-	group.add_student("vigor", "rtyvbx", "atyu", 10000);
-	group.add_student("midor", "cvlpbvbn", "ubndg", 200);
+	group.add_student("sidor", "abcda", "zxcv", 10);
+	group.add_student("pidor", "abcdf", "ghhdf", 9);
+	group.add_student("sigor", "abcdb", "atyu", 8);
+	group.add_student("midor", "abcd", "ubndg", 7);
+	cout << group.avg_point() << endl;
+	group.print_group();
+	group.sort_point();
+	group.print_group();
+	group.sort_sname();
+	group.print_group();
+	group.rem_student(1);
+	group.print_group();
+	group.destroy();
 	return 0;
 }
-
-/*vector<int> m;
-	for (int i=0; i<10; i++)
-		m.insert(m.begin(), i);
-	vector<int> m2 (m);
-	//m2.reserve(10);
-	m2.insert(m2.begin()+4, 100);
-	copy(m.begin(), m.end(), ostream_iterator<int>(cout, "\n")); 
-	copy(m2.begin(), m2.end(), ostream_iterator<int>(cout, "\n"));
-	//m.~vector();
-	//m2.~vector();*/
