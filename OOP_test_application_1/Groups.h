@@ -1,4 +1,4 @@
-#ifndef GROUPSTUDENT_H
+/*#ifndef GROUPSTUDENT_H
 #define GROUPSTUDENT_H
 
 using namespace std;
@@ -9,8 +9,8 @@ class Group
 public:
 	Group()	{}
 	~Group() {}
-	bool add_student(char *name, char *surname, char *patronymic, int points) {
-		Student stud(name, surname, patronymic, points);
+	bool add_student(char *name, char *surname, int grade) {
+		Student stud(name, surname, grade);
 		if (stud.valid_student()) {
 			student.insert(student.end(), stud);
 			return 1;
@@ -42,7 +42,6 @@ public:
 		for (int i = 0; i < (int)student.size() - 1 ; i++) {
 			for (int j = i; j < (int)student.size() - 1; j++) {
 				int k = 0;
-				//i?iaa?ea no?ie
 				do {
 					if (student[j].GetSurname()[k] == student[j+1].GetSurname()[k]) {
 						k++;
@@ -55,7 +54,6 @@ public:
 						}
 					}
 				} while (k > 0 && student[j].GetSurname()[k] != '\0' &&  student[j+1].GetSurname()[k] != '\0');
-				// e = 0 no?iee iaai iiiaiyou ianoaie
 				if (k == 0) {
 					Student stud = student[j];
 					student[j] = student[j+1];
@@ -84,4 +82,4 @@ public:
 
 };
 
-#endif
+#endif*/

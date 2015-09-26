@@ -1,118 +1,115 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
+#include <string>
 using namespace std;
 
 class Student
 {
-	char *name;
-	char *surname;
-	char *patronymic;
-	int points;
+	static int count;
+	string name;
+	string surname;
+	int grade;
+	int id;
 
-	bool valid_string(char *str) {
-		int i = 0;
-		if (str) {
-			while ((str[i] != '\0') && (i >= 0))
-			{
-				if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) {
-					i++;
-				} else {
-					i = -1;
-				}
-			}
-		}
-		if (i <= 0) {
-			return 0;
-		} else {
-			return 1;
-		}
-	}	
+	bool valid_string(const string str) const;
+	bool valid_grade() const;
 
 public:
-	Student (char *name, char *surname, char *patronymic, int points) {
-		if (!SetName(name) || !SetSurname(surname) || !SetPatronymic(patronymic) || !SetPoints(points)) {
-			cout << "Error create class student, data not valid" << endl;
-		} 
-	}
-	/*Student (char *name, char *surname, char *patronymic) {
-		Student(name, surname, patronymic, 0);
-	}*/
-	~Student() {
-		//delete(name);
-		//delete(surname);
-		//delete(patronymic);
-	}
+	Student (string name, string surname, int grade);
+	~Student();
 
-	bool valid_student()
-	{
-		return valid_string(GetName()) && valid_string(GetSurname()) && valid_string(GetPatronymic()) && GetPoint();
-	}
+    bool valid_student() const;
 
-	char *GetName() {
-		return name;
-	}
-	char *GetSurname() {
-		return surname;
-	}
-	char *GetPatronymic() {
-		return patronymic;
-	}
-	int GetPoint() {
-		return points;
-	}
+	string GetName() const;
+	string GetSurname() const;
+	int GetGrade() const;
 
-	bool SetName(char *name) {
-		char *temp = GetName();
-		this->name = name;
-		if (valid_string(this->name)) {
-			return 1;
-		} else {
-			this->name = temp;
-			return 0;
-		}
-	}
-	bool SetSurname(char *surname) {
-		char *temp = GetSurname();
-		this->surname = surname;
-		if (valid_string(this->surname)) {
-			return 1;
-		} else {
-			this->surname = temp;
-			return 0;
-		}
-	}
-	bool SetPatronymic(char *patr) {
-		char *temp = GetPatronymic();
-		this->patronymic = patr;
-		if (valid_string(this->patronymic)) {
-			return 1;
-		} else {
-			this->patronymic = temp;
-			return 0;
-		}
-	}
-	bool SetPoints(int pnt) {
-		int temp = this->points;
-		this->points = pnt;
-		if (valid_student()) {
-			return 1;
-		} else {
-			this->points = temp;
-			return 0;
-		}
-	}
+	void SetId();
+	bool SetName(const string name);
+	bool SetSurname(const string surname);
+	bool SetGrade(const int pnt);
 
-	bool addpoint(int pnt) {
-		return SetPoints(GetPoint() + pnt);
-	}
-	void print_info() {
-		if (valid_student()) {
-			cout << "Name: " << GetName() << " | Surname: " << GetSurname() << " | Patronymic: " << GetPatronymic() << " | Point: " << GetPoint() << endl;
-		} else {
-			cout << "Value in class Student is not valid" << endl;
-		}
-	}
+	bool AddGrade(int pnt);
+	string Print_info() const;
 };
+
+int Student::count = 0;
+
+bool Student::valid_string(const string str) const {
+	return (str.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-") == string::npos);
+}
+bool Student::valid_grade() const {
+	return !(GetGrade() < 0);
+}
+
+Student::Student (string name, string surname, int grade): name(name), surname(surname), grade(0) {
+	if (!SetName(name) || !SetSurname(surname) || !SetGrade(grade)) {
+		cout << "Error create object student, data not valid" << endl;
+	} else {
+		SetId();
+		this->count++;
+	}
+}
+Student::~Student() {}
+
+bool Student::valid_student() const {
+	return valid_string(GetName()) && valid_string(GetSurname()) && valid_grade();
+}
+ 
+string Student::GetName() const {
+	return name;
+}
+string Student::GetSurname() const {
+	return surname;
+}
+int Student::GetGrade() const  {
+	return grade;
+}
+
+void Student::SetId() {
+	if (count < 0) {
+		cout << "Error set unique id" << endl;
+	} else {
+		this->id = count; 
+	}
+}
+bool Student::SetName(const string name) {
+	string temp = GetName();
+	this->name = name;
+	if (valid_string(this->name)) {
+		return 1;
+	} else {
+		this->name = temp;
+		return 0;
+	}
+}
+bool Student::SetSurname(const string surname) {
+	string temp = GetSurname();
+	this->surname = surname;
+	if (valid_string(this->surname)) {
+		return 1;
+	} else {
+		this->surname = temp;
+		return 0;
+	}
+}
+bool Student::SetGrade(const int pnt) {
+	int temp = this->grade;
+	this->grade = pnt;
+	if (valid_grade()) {
+		return 1;
+	} else {
+		this->grade = temp;
+		return 0;
+	}
+}
+
+bool Student::AddGrade(int pnt) {
+	return SetGrade(GetGrade() + pnt);
+}
+string Student::Print_info() const {
+	return "Name: " + GetName() + " | Surname: " + GetSurname() + " | Grade: " + to_string(GetGrade());
+}
 
 #endif
