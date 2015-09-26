@@ -18,8 +18,9 @@ class Student
 public:
 	Student (string name, string surname, int grade);
 	~Student();
+	Student(const Student &other);
 
-    bool valid_student() const;
+	bool valid_student() const;
 
 	string GetName() const;
 	string GetSurname() const;
@@ -52,6 +53,10 @@ Student::Student (string name, string surname, int grade): name(name), surname(s
 	}
 }
 Student::~Student() {}
+Student::Student(const Student &other) {
+	*this = other;
+	//cout << "copy constructor\n"; 
+}
 
 bool Student::valid_student() const {
 	return valid_string(GetName()) && valid_string(GetSurname()) && valid_grade();

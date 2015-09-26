@@ -2,13 +2,14 @@
 #include <vector>
 #include "Student.h"
 #include "Groups.h"
-#include <string>
 
 using namespace std;
 
 int main()
  {
 	Student student("sidor", "AZaz", 3);
+	Student st2("vigor", "alala", 7);
+	Student st1("buor", "biblio", 123);
 	student.SetName("lox");
 	std::cout << student.Print_info() << endl;
 	/*Group group;
