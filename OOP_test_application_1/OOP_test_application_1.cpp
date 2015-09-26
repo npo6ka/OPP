@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <iostream>
 #include <vector>
 
@@ -28,8 +27,7 @@ class Student
 		} else {
 			return 1;
 		}
-	}
-	
+	}	
 
 public:
 	Student (char *name, char *surname, char *patronymic, int points) {
@@ -133,7 +131,7 @@ public:
 		}
 	}
 	bool rem_student(int num) {
-		if (student.size() >= num && num >=0) {
+		if ((int)student.size() >= num && num >=0) {
 			student.erase(student.begin()+num);
 			return 1;
 		} else {
@@ -147,16 +145,16 @@ public:
 	}
 	float avg_point() {
 		int sum = 0;
-		for (int i = 0; i < student.size(); i++) {
+		for (int i = 0; i < (int)student.size(); i++) {
 			sum += student[i].GetPoint();
 		}
 		return (float)sum / student.size();
 	}
 	void sort_sname() {
-		for (int i = 0; i < student.size() - 1 ; i++) {
-			for (int j = i; j < student.size() - 1; j++) {
+		for (int i = 0; i < (int)student.size() - 1 ; i++) {
+			for (int j = i; j < (int)student.size() - 1; j++) {
 				int k = 0;
-				//проверка строк
+				//i?iaa?ea no?ie
 				do {
 					if (student[j].GetSurname()[k] == student[j+1].GetSurname()[k]) {
 						k++;
@@ -169,7 +167,7 @@ public:
 						}
 					}
 				} while (k > 0 && student[j].GetSurname()[k] != '\0' &&  student[j+1].GetSurname()[k] != '\0');
-				// к = 0 строки надо поменять местами
+				// e = 0 no?iee iaai iiiaiyou ianoaie
 				if (k == 0) {
 					Student stud = student[j];
 					student[j] = student[j+1];
@@ -179,8 +177,8 @@ public:
 		}
 	}
 	void sort_point() {
-		for (int i = 0; i < student.size() - 1 ; i++) {
-			for (int j = i; j < student.size() - 1; j++) {
+		for (int i = 0; i < (int)student.size() - 1 ; i++) {
+			for (int j = i; j < (int)student.size() - 1; j++) {
 				if (student[j].GetPoint() < student[j+1].GetPoint()) {
 					Student stud = student[j];
 					student[j] = student[j+1];
@@ -190,7 +188,7 @@ public:
 		}
 	}
 	void print_group() {
-		for (int i = 0; i < student.size(); i++) {
+		for (int i = 0; i < (int)student.size(); i++) {
 			student[i].print_info();
 		}
 		cout << endl;
