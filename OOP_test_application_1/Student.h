@@ -25,6 +25,7 @@ public:
 	string GetName() const;
 	string GetSurname() const;
 	int GetGrade() const;
+	int GetId() const;
 
 	void SetId();
 	bool SetName(const string name);
@@ -70,6 +71,9 @@ string Student::GetSurname() const {
 }
 int Student::GetGrade() const  {
 	return grade;
+}
+int Student::GetId() const {
+	return id;
 }
 
 void Student::SetId() {
