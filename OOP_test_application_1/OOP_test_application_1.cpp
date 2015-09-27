@@ -16,9 +16,9 @@ int main()
 	group.add_student(&ab1);
 	group.add_student(&ab2);
 	group.add_student(&ab3);
-	group.FindStudById(1);
-	group.FindStudByName("vlad", "sidorov");
-	group.FindStudByRef(&ab2);
+	group.rem_student(0);
+	group.rem_student("vlad", "sidorov");
+	group.rem_student(&ab2);
 	//group.rem_student(&ab3);
 
 	/*group.add_student("sidor", "abcda", 10);

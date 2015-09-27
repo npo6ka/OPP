@@ -8,14 +8,19 @@ using namespace std;
 class Group
 {
 	list<Student *> GroupStudent;
+	list<Student *>::iterator FindStudById(int id);
+	list<Student *>::iterator FindStudByRef(Student *stud);
+	list<Student *>::iterator FindStudByName(string name, string sname);
+	bool RmStud(list<Student *>::iterator it);
 public:
 	Group();
 	~Group();
 	Group(const Student &other);
 	bool add_student(Student *stud);
-	list<Student *>::iterator FindStudById(int id);
-	list<Student *>::iterator FindStudByRef(Student *stud);
-	list<Student *>::iterator FindStudByName(string name, string sname);
+	bool rem_student (int id);
+	bool rem_student (Student *stud);
+	bool rem_student (string name, string sname);
+	
 };
 
 Group::Group()	{}
@@ -25,7 +30,7 @@ Group::Group(const Student &other) {
 }
 
 bool Group::add_student(Student *stud) {
-	if (stud->valid_student()) {
+	if (stud->valid_student() && FindStudById(stud->GetId()) == GroupStudent.end()) {
 		GroupStudent.push_front(stud);
 		return 1;
 	} else {
@@ -33,50 +38,40 @@ bool Group::add_student(Student *stud) {
 	}
 }
 
-bool mypredicate (Student * i, int j) {
-  return (i->GetId() == j);
-}
-
-bool mypredicate2 (const Student * i, const string str[]) {
-	return (i->GetName() == str[0] && i->GetSurname() == str[1]);
-}
-
-//returns one student with the specified id
 list<Student *>::iterator Group::FindStudById(int id) {
-	list<Student *>::iterator it;
-	it = std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, id, mypredicate);
-	return it;
+	return std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, id, 
+						 [](Student * i, int j) -> bool { 
+							 return (i->GetId() == j); 
+						 });
 }
-
-//returns one student at specified ref
 list<Student *>::iterator Group::FindStudByRef(Student *stud) {
-	list<Student *>::iterator it;
-	it = std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, stud);
-	return it;
+	return std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, stud);
 }
-
-//returns one student at specified name add surname
 list<Student *>::iterator Group::FindStudByName(string name, string sname) {
-	list<Student *>::iterator it;
 	string str[2] = {name, sname}; 
-	it = std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, str, mypredicate2);
-	return it;
+	return std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, str, 
+						 [](const Student * i, const string str[]) -> bool {
+							 return (i->GetName() == str[0] && i->GetSurname() == str[1]);
+						 });
 }
 
-bool RmStud() {
-	return 0;
+bool Group::RmStud(list<Student *>::iterator it) {
+	if (it != GroupStudent.end() && it._Ptr->_Myval->valid_student()) {
+		GroupStudent.erase(it);
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
-bool rem_student (int id) {
-	return 0;
+bool Group::rem_student(int id) {
+	return RmStud(FindStudById(id));
 }
-
-bool rem_student (Student *stud) {
-	return 0;
+bool Group::rem_student(Student *stud) {
+	return RmStud(FindStudByRef(stud));
 }
-
-bool rem_student (string name, string sname) {
-	return 0;
+bool Group::rem_student(string name, string sname) {
+	return RmStud(FindStudByName(name, sname));
 }
 
 //cout << it._Ptr->_Myval->GetName() << endl;
