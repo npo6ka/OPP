@@ -2,7 +2,12 @@
 #define STUDENT_H
 
 #include <string>
+#include <list>
+
 using namespace std;
+
+class Group;
+void DelSt(list<Group *> buf, int id);
 
 class Student
 {
@@ -11,9 +16,11 @@ class Student
 	string surname;
 	int grade;
 	int id;
+    list <Group *> GrpSt;
 
 	bool valid_string(const string str) const;
 	bool valid_grade() const;
+    bool add_group(Group *);
 
 public:
 	Student (string name, string surname, int grade);
@@ -26,14 +33,17 @@ public:
 	string GetSurname() const;
 	int GetGrade() const;
 	int GetId() const;
+    list <Group* > GetGrp() const; 
 
 	void SetId();
 	bool SetName(const string name);
 	bool SetSurname(const string surname);
 	bool SetGrade(const int pnt);
 
+    bool Student::DelGrp(Group * grp);
 	bool AddGrade(int pnt);
 	string Print_info() const;
+    friend Group;
 };
 
 int Student::count = 0;
@@ -44,6 +54,15 @@ bool Student::valid_string(const string str) const {
 bool Student::valid_grade() const {
 	return !(GetGrade() < 0);
 }
+bool Student::add_group(Group * NuGrp) {
+    if (GrpSt.size() < 3) {
+        GrpSt.push_back(NuGrp);
+        return 1;
+    } else {
+        return 0;
+    }
+    return 0;
+}
 
 Student::Student (string name, string surname, int grade): name(name), surname(surname), grade(0) {
 	if (!SetName(name) || !SetSurname(surname) || !SetGrade(grade)) {
@@ -53,7 +72,9 @@ Student::Student (string name, string surname, int grade): name(name), surname(s
 		this->count++;
 	}
 }
-Student::~Student() {}
+Student::~Student() {
+    DelSt(GetGrp(), id);
+}
 Student::Student(const Student &other) {
 	*this = other;
 	//cout << "copy constructor\n"; 
@@ -74,6 +95,9 @@ int Student::GetGrade() const  {
 }
 int Student::GetId() const {
 	return id;
+}
+list <Group* > Student::GetGrp() const {
+    return this->GrpSt;
 }
 
 void Student::SetId() {
@@ -114,6 +138,12 @@ bool Student::SetGrade(const int pnt) {
 	}
 }
 
+bool Student::DelGrp(Group * grp) {
+    for(auto& i: GrpSt) {
+
+    }
+    return 1;
+}
 bool Student::AddGrade(int pnt) {
 	return SetGrade(GetGrade() + pnt);
 }

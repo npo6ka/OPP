@@ -1,13 +1,16 @@
 #ifndef GROUPSTUDENT_H
 #define GROUPSTUDENT_H
-
+#include "Student.h"
 #include <list>
 #include <algorithm>
+
 using namespace std;
 
 class Group
 {
+    static int count;
     list<Student *> GroupStudent;
+    int id;
     list<Student *>::iterator FindStudById(int id);
     list<Student *>::iterator FindStudByRef(Student *stud);
     list<Student *>::iterator FindStudByName(string name, string sname);
@@ -22,14 +25,29 @@ public:
     bool Rem_student (string name, string sname);
     Student* FindStudent(string name, string sname);
     Student* FindStudent(int id);
+    list<Student *> ListStd();
     bool ValidGroup();
     list<string> InfoGroup();
     float AvrGrade();
     void SortByGrade();
+    void SortBySurname();
+    void SortByName();
+    void GroupDstr();
 };
 
-Group::Group()    {}
-Group::~Group() {}
+int Group::count = 0;
+
+Group::Group() {
+    if (count >= 0) {
+        this->id = count;
+        this->count++;
+    }
+}
+Group::~Group() {
+    for (auto &i: GroupStudent) {
+        
+    }
+}
 Group::Group(const Group &other) {
     *this = other;
 }
@@ -37,16 +55,18 @@ Group::Group(const Group &other) {
 bool Group::Add_student(Student *stud) {
     Group buff = *this;
     GroupStudent.push_front(stud);
-    if (!ValidGroup() || FindStudById(stud->GetId()) == GroupStudent.end()) {
+    if (!ValidGroup() || FindStudById(stud->GetId()) == GroupStudent.end() || 
+        !stud->add_group(this)) {
         *this = buff;
         return 0;
     } else {
+
         return 1;
     }
 }
 
 list<Student *>::iterator Group::FindStudById(int id) {
-    return std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, id, 
+        return std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, id, 
                          [](Student * i, int j) -> bool { 
                              return (i->GetId() == j); 
                          });
@@ -82,10 +102,24 @@ bool Group::Rem_student(string name, string sname) {
 }
 
 Student* Group::FindStudent(string name, string sname) {
-    return *FindStudByName(name, sname);
+    list<Student *>::iterator it = FindStudByName(name, sname);
+    if (it == GroupStudent.end()) {
+        return NULL;
+    } else {
+        return *it;
+    }
 }
 Student* Group::FindStudent(int id) {
-    return *FindStudById(id);
+    list<Student *>::iterator it = FindStudById(id);
+    if (it == GroupStudent.end()) {
+        return NULL;
+    } else {
+        return *it;
+    }
+}
+
+list<Student *> Group::ListStd() {
+    return this->GroupStudent;
 }
 
 bool Group::ValidGroup() {
@@ -121,53 +155,29 @@ void Group::SortByGrade() {
     });
 }
 
+void Group::SortBySurname() {
+    GroupStudent.sort([](const Student *first, const Student *second) -> bool {
+        return (first->GetSurname() < second->GetSurname());
+    });
+}
 
-//void destroy() {
-    //    if (!student.empty()) {
-    //        student.clear();
-    //    }
-    //}
-    //float avg_point() {
-    //    int sum = 0;
-    //    for (int i = 0; i < (int)student.size(); i++) {
-    //        sum += student[i].GetPoint();
-    //    }
-    //    return (float)sum / student.size();
-    //}
-    //void sort_sname() {
-    //    for (int i = 0; i < (int)student.size() - 1 ; i++) {
-    //        for (int j = i; j < (int)student.size() - 1; j++) {
-    //            int k = 0;
-    //            do {
-    //                if (student[j].GetSurname()[k] == student[j+1].GetSurname()[k]) {
-    //                    k++;
-    //                } else {
-    //                    
-    //                    if (student[j].GetSurname()[k] < student[j+1].GetSurname()[k]) {
-    //                        k = 0;
-    //                    } else {
-    //                        k = -1;
-    //                    }
-    //                }
-    //            } while (k > 0 && student[j].GetSurname()[k] != '\0' &&  student[j+1].GetSurname()[k] != '\0');
-    //            if (k == 0) {
-    //                Student stud = student[j];
-    //                student[j] = student[j+1];
-    //                student[j+1] = stud;
-    //            }
-    //        }
-    //    }
-    //}
-    //void sort_point() {
-    //    for (int i = 0; i < (int)student.size() - 1 ; i++) {
-    //        for (int j = i; j < (int)student.size() - 1; j++) {
-    //            if (student[j].GetPoint() < student[j+1].GetPoint()) {
-    //                Student stud = student[j];
-    //                student[j] = student[j+1];
-    //                student[j+1] = stud;
-    //            }
-    //        }
-    //    }
-    //}
-;
+void Group::SortByName() {
+    GroupStudent.sort([](const Student *first, const Student *second) -> bool {
+        return (first->GetName() < second->GetName());
+    });
+}
+
+void Group::GroupDstr() {
+
+}
+
+void DelSt(list<Group *> buf, int id) {
+    //buf.size();
+    if (buf.front()->ListStd().front()->GetGrp().front()->AvrGrade()) {
+        for (auto &i: buf) {
+            i->Rem_student(id); 
+        }
+    }
+}
+
 #endif
