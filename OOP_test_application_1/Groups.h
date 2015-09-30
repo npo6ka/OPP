@@ -32,7 +32,7 @@ public:
     void SortByGrade();
     void SortBySurname();
     void SortByName();
-    void GroupDstr();
+    bool RmStGr(int id);
 };
 
 int Group::count = 0;
@@ -44,9 +44,11 @@ Group::Group() {
     }
 }
 Group::~Group() {
+    cout << "des group" << endl;
     for (auto &i: GroupStudent) {
-        
+        i->DelGrp(this);
     }
+    this->GroupStudent.clear();
 }
 Group::Group(const Group &other) {
     *this = other;
@@ -60,7 +62,6 @@ bool Group::Add_student(Student *stud) {
         *this = buff;
         return 0;
     } else {
-
         return 1;
     }
 }
@@ -72,7 +73,7 @@ list<Student *>::iterator Group::FindStudById(int id) {
                          });
 }
 list<Student *>::iterator Group::FindStudByRef(Student *stud) {
-    return std::search_n(GroupStudent.begin(), GroupStudent.end(), 1, stud);
+    return search_n(GroupStudent.begin(), GroupStudent.end(), 1, stud);
 }
 list<Student *>::iterator Group::FindStudByName(string name, string sname) {
     string str[2] = {name, sname}; 
@@ -83,6 +84,17 @@ list<Student *>::iterator Group::FindStudByName(string name, string sname) {
 }
 
 bool Group::RmStud(list<Student *>::iterator it) {
+    if (it != GroupStudent.end()) {
+        (*it)->DelGrp(this);
+        GroupStudent.erase(it);
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+bool Group::RmStGr(int id) {
+    list<Student *>::iterator it = FindStudById(id);
     if (it != GroupStudent.end()) {
         GroupStudent.erase(it);
         return 1;
@@ -167,17 +179,9 @@ void Group::SortByName() {
     });
 }
 
-void Group::GroupDstr() {
-
-}
-
 void DelSt(list<Group *> buf, int id) {
-    //buf.size();
-    if (buf.front()->ListStd().front()->GetGrp().front()->AvrGrade()) {
-        for (auto &i: buf) {
-            i->Rem_student(id); 
-        }
+    for (auto &i: buf) {
+        i->RmStGr(id); 
     }
 }
-
 #endif

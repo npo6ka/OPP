@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <algorithm>
 
 using namespace std;
 
@@ -21,7 +22,6 @@ class Student
 	bool valid_string(const string str) const;
 	bool valid_grade() const;
     bool add_group(Group *);
-
 public:
 	Student (string name, string surname, int grade);
 	~Student();
@@ -73,6 +73,7 @@ Student::Student (string name, string surname, int grade): name(name), surname(s
 	}
 }
 Student::~Student() {
+    cout << "dest stud" << endl;
     DelSt(GetGrp(), id);
 }
 Student::Student(const Student &other) {
@@ -96,6 +97,7 @@ int Student::GetGrade() const  {
 int Student::GetId() const {
 	return id;
 }
+
 list <Group* > Student::GetGrp() const {
     return this->GrpSt;
 }
@@ -139,10 +141,16 @@ bool Student::SetGrade(const int pnt) {
 }
 
 bool Student::DelGrp(Group * grp) {
-    for(auto& i: GrpSt) {
-
+    list<Group *>::iterator it = search_n(GrpSt.begin(), GrpSt.end(), 1, grp, 
+                         [](Group * i, Group * j) -> bool { 
+                             return (i == j); 
+                         });
+    if (it == GrpSt.end()) {
+        return 0;
+    } else {
+        GrpSt.erase(it);
+        return 1;
     }
-    return 1;
 }
 bool Student::AddGrade(int pnt) {
 	return SetGrade(GetGrade() + pnt);
