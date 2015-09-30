@@ -2,8 +2,6 @@
 #include "Student.h"
 #include "Groups.h"
 
-
-#include <list>
 using namespace std;
 
 void printGroup(list<string> buff) {
