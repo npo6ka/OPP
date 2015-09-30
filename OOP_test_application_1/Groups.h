@@ -11,6 +11,7 @@ class Group
     static int count;
     list<Student *> GroupStudent;
     int id;
+
     list<Student *>::iterator FindStudById(int id);
     list<Student *>::iterator FindStudByRef(Student *stud);
     list<Student *>::iterator FindStudByName(string name, string sname);
@@ -44,7 +45,6 @@ Group::Group() {
     }
 }
 Group::~Group() {
-    cout << "des group" << endl;
     for (auto &i: GroupStudent) {
         i->DelGrp(this);
     }

@@ -15,8 +15,8 @@ int main()
 	Student ab1("anton", "ivanov", 7);
 	Student ab2("svetlana", "petrova", 12);
 	Student ab3("vlad", "sidorov", 3);
-    Student ab4("vlad", "sidorov", 3);
-    Student ab5("vlad", "sidorov", 3);
+    Student ab4("dmitriy", "egorova", 18);
+    Student ab5("maria", "fedorova", 10);
 	Group group0;
     Group group1;
     Group group2;
@@ -31,11 +31,14 @@ int main()
 	group0.Add_student(&ab3);
     group0.Add_student(&ab4);
     group0.Add_student(&ab5);
-    cout << group0.AvrGrade() << endl;
+    cout << "Average grade: " << group0.AvrGrade() << endl;\
+    cout << "list group:" << endl;
     printGroup(group0.InfoGroup());
     group0.SortByGrade();
+    cout << "Sort by Grade:" << endl;
     printGroup(group0.InfoGroup());
     group0.SortBySurname();
+    cout << "Sort by Surname:" << endl;
     printGroup(group0.InfoGroup());
     group0.SortBySurname();
     printGroup(group0.InfoGroup());

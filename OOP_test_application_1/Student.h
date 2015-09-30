@@ -12,6 +12,7 @@ void DelSt(list<Group *> buf, int id);
 
 class Student
 {
+private:
 	static int count;
 	string name;
 	string surname;
@@ -73,7 +74,6 @@ Student::Student (string name, string surname, int grade): name(name), surname(s
 	}
 }
 Student::~Student() {
-    cout << "dest stud" << endl;
     DelSt(GetGrp(), id);
 }
 Student::Student(const Student &other) {
