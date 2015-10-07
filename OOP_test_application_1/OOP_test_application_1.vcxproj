@@ -82,10 +82,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GroupStudent.cpp" />
     <ClCompile Include="OOP_test_application_1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Groups.h" />
+    <ClInclude Include="GroupStudent.h" />
     <ClInclude Include="Student.h" />
   </ItemGroup>
   <ItemGroup>
