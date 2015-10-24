@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{52731501-5348-40E1-A1E1-0D21C31009CC}</ProjectGuid>
+    <ProjectGuid>{84C2AECD-3C67-488E-B7EE-106A05343034}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>OOP_test_application_1</RootNamespace>
+    <RootNamespace>OOP_lab_02</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -53,15 +53,11 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -82,13 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GroupStudent.cpp" />
-    <ClCompile Include="OOP_test_application_1.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Groups.h" />
-    <ClInclude Include="GroupStudent.h" />
-    <ClInclude Include="Student.h" />
+    <ClCompile Include="lab_02.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

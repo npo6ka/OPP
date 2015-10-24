@@ -51,4 +51,3 @@ int main()
     printGroup(&group0);
     return 0;
 }
-
