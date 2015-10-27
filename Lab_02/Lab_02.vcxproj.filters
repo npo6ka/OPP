@@ -18,10 +18,10 @@
     <ClCompile Include="lab_02.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="GameBoardCell.cpp">
+    <ClCompile Include="GameBoard.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="GameBoard.cpp">
+    <ClCompile Include="GameBoardCell.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
