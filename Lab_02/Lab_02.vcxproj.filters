@@ -24,12 +24,18 @@
     <ClCompile Include="GameBoardCell.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="ship.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameBoardCell.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="GameBoard.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="ship.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

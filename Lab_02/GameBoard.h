@@ -2,12 +2,11 @@
 #define GAMEBOARD_H
 
 #include "GameBoardCell.h"
-#include <deque>
+#include "ship.h"
 
-enum Direction {
-    HORIZONTAL = 0,
-    VERTICAL   = 1,
-};
+#include <list>
+
+
 
 class GameBoard {
     int _BoardSize;       // размер игрового поля
@@ -30,6 +29,15 @@ public:
     }
     ~GameBoard() {}
     void SetShip(const int x, const int y, const Direction div, const int size) {
+        /*list <GameBoardCell *> mas;
+        for (int i = 0; i < size; i++) {
+            if (div == HORIZONTAL) {
+                mas.push_back(&_board[x+i][y]);
+            } else {
+                mas.push_back(&_board[x][y+i]);
+            }
+        }*/
+        Ship sh (size, x, y, div, &_board);
 
     }
     bool Shot() {
@@ -42,18 +50,15 @@ public:
         return _BoardSize;
     }
 
-
-
-
-
-
     bool ValidBoard() {
         int CountShip[4];
         for (int i = 0; i < GetSize(); i++) {
             for (int j = 0; j < GetSize(); j++) {
-                if (_board[i][j].GetStat() > MISS) {
+                if (_board[i][j].GetShip()) {
                     //CountShip[_board[i][j].GetShip().GetSize() - 1]++;
-                    if (_board[i+1][j].GetStat() > MISS || _board[i][j+1].GetStat() || _board[i+1][j+1].GetStat()) {
+                    if (_board[i+1][j].GetShip() != _board[i][j].GetShip() || 
+                        _board[i][j+1].GetShip() != _board[i][j].GetShip() || 
+                        _board[i+1][j+1].GetShip() != _board[i][j].GetShip()) {
                         return 0;
                     }
                 }

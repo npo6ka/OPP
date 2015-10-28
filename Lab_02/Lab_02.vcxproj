@@ -81,10 +81,12 @@
     <ClCompile Include="GameBoard.cpp" />
     <ClCompile Include="GameBoardCell.cpp" />
     <ClCompile Include="lab_02.cpp" />
+    <ClCompile Include="ship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameBoard.h" />
     <ClInclude Include="GameBoardCell.h" />
+    <ClInclude Include="ship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,12 +1,12 @@
 #include "GameBoardCell.h"
 
-GameBoardCell::GameBoardCell(int x, int y) : _x(x), _y(y), _state(EMPTY)  {
-     cout << "constructor Cell" << endl;
+GameBoardCell::GameBoardCell(int x, int y) : _x(x), _y(y), _state(EMPTY), _sh(NULL)  {
+    cout << "constructor Cell" << endl;
 }
 
 void GameBoardCell::SetPos(const int x, const int y) {
-        _x = x;
-        _y = y;
+    _x = x;
+    _y = y;
 }
 
 void GameBoardCell::SetStat (const Stat st) {
