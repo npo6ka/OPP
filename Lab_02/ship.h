@@ -13,25 +13,35 @@ enum Direction {
 class Ship {
     list <GameBoardCell *> _BufShip; 
     int _SizeShip;
+    Direction _Dir;
 public:
-    /*Ship(int SizeShip, list <GameBoardCell *> BufShip):
-         _SizeShip(SizeShip), _BufShip(BufShip) {}*/
-
-    Ship (int SizeShip, int x, int y, Direction div, deque<deque<GameBoardCell>> *board):
-          _SizeShip(SizeShip) {
-        for (int i = 0; i < _SizeShip; i++) {
-            if (div == HORIZONTAL) {
-                _BufShip.push_back(&(*board)[x+i][y]);
-            } else {
-                _BufShip.push_back(&(*board)[x][y+i]);
-            }
-        }
+    Ship (int SizeShip,  list <GameBoardCell *> BufShip, Direction dir):
+        _SizeShip(SizeShip), _BufShip(BufShip), _Dir(dir) {
         for (auto& it: _BufShip) {
             it->SetStat(DECK);
+            it->SetShip(this);
         }
     }
     ~Ship() {}
-    
+
+    void DestroyShip() {
+        for (auto& it: _BufShip) {
+            it->SetStat(EMPTY);
+            it->SetShip(NULL);
+        }
+    }
+    bool ValidShip() {
+        for (auto& it: _BufShip) {
+            if (it->GetShip() != this) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    int GetSize() {
+        return _SizeShip;
+    }
     bool ShotInShip(int x, int y) {
 
     }
