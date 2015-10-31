@@ -8,52 +8,87 @@
 #include <array>
 #include <algorithm>
 
+#define _BoardSize 10
 
+enum ShipCount{
+    _1Deck = 4,
+    _2Deck = 3,
+    _3Deck = 2,
+    _4Deck = 1
+};
 
 class GameBoard {
-    int _BoardSize;                         // размер игрового поля
-    static const int _4DeckShipCount = 1;   // число 4-х палубных
-    static const int _3DeckShipCount = 2;   // число 3-х палубных
-    static const int _2DeckShipCount = 3;   // число 2-х палубных
-    static const int _1DeckShipCount = 4;   // число 1-х палубных
-    deque<deque<GameBoardCell>> _board;
+    GameBoardCell *_board[_BoardSize][_BoardSize];
     array<list<Ship *>, 4> MasShip;
+
     void Generate() {
-        _board.resize(_BoardSize);
         for (int i = 0; i < _BoardSize; i++) {
             for (int j = 0; j < _BoardSize; j++) {
-                _board[i].push_back(GameBoardCell(i, j));
+                _board[i][j] = new GameBoardCell(i, j);
+            }
+        }
+    }
+    void Remove() {
+        for (int i = 0; i < _BoardSize; i++) {
+            for (int j = 0; j < _BoardSize; j++) {
+                delete(_board[i][j]);
             }
         }
     }
 public:
-    GameBoard(int SizeBoard): _BoardSize(SizeBoard)  {
+    GameBoard() {
         Generate();
     }
-    ~GameBoard() {}
+    ~GameBoard() {
+        Remove();
+    }
+
+    GameBoardCell* GetCell(const int x, const int y) const {
+        if (x < 0 || x > _BoardSize || y < 0 || y > _BoardSize) {
+            return NULL;
+        } else { 
+            return _board[x][y];
+        }
+    }
+    Ship* GetShip(const int x, const int y) const {
+        GameBoardCell *cell = GetCell(x, y);
+        if (cell != NULL) {
+            return cell->GetShip();
+        } else return NULL;
+    }
+    list<Ship *> GetListShip(const int size) const {
+        if (size >= 0 && size <= 4) {
+            return MasShip[size];
+        } else {
+            list<Ship *> ship;
+            return ship; 
+        }
+    }
 
     bool SetShip(const int x, const int y, const Direction dir, const int size) {
         list <GameBoardCell *> mas;
-        for (int i = 0; i < size; i++) {
-            if (dir == HORIZONTAL) {
-                if (_board[x+i-1][y-1].GetShip() == NULL) {
-                    mas.push_back(&_board[x+i-1][y-1]);
-                } else return 0;
-            } else {
-                if (_board[x-1][y+i-1].GetShip() == NULL) {
-                    mas.push_back(&_board[x-1][y+i-1]);
+        if (dir == HORIZONTAL) {
+            for (int i = 0; i < size; i++) {
+                if (GetShip(x, y+i) == NULL) {
+                    mas.push_back(GetCell(x, y+i));
                 } else return 0;
             }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (GetShip(x+i, y) == NULL) {
+                    mas.push_back(GetCell(x+i, y));
+                } else return 0;
+            }         
         }
         Ship *buf = new Ship(size, mas, dir);
         MasShip[size-1].push_back(buf); 
         return 1;
     }
     bool DelShip (const int x, const int y) {
-        if (x <= 0 || x >= _BoardSize || y <= 0 || y >= _BoardSize) {
+        if (GetShip(x, y) == NULL) {
             return 0;
         } else {
-            Ship *sh = _board[x-1][y-1].GetShip();   
+            Ship *sh = GetShip(x, y);   
             int size = sh->GetSize()-1;
             auto it = search_n (MasShip[size].begin(), MasShip[size].end(), 1, sh,
                     [](Ship *i, Ship *j) -> bool {
@@ -63,50 +98,83 @@ public:
             if (it != MasShip[size].end()) {
                 MasShip[size].erase(it);
             } else return 0;
-            sh->DestroyShip();
             delete(sh);
             return 1;
         }
     }
 
-    int GetSize () {
-        return _BoardSize;
+    void PrintBoard() {
+        for (int i = 0; i < _BoardSize; i++) {
+            for (int j = 0; j < _BoardSize; j++) {
+                cout << GetCell(i, j)->GetStat();
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+
+    bool ValidShip(Ship *sh){
+        int x = sh->GetX();
+        int y = sh->GetY();
+        PrintBoard();
+        if (sh->GetDir() == HORIZONTAL) {
+            for (int i = y-1; i < y + sh->GetSize() + 1; i++) {
+                if (GetShip(x-1, i) || GetShip(x+1, i)) return 0;
+            }
+            if (GetShip(x-1, y) || GetShip(x, y + sh->GetSize())) return 0;
+        } else {
+            for (int i = x-1; i < x + sh->GetSize() + 1; i++) {
+                if (GetShip(i, y-1) || GetShip(i, y+1)) return 0;
+            }
+            if(GetShip(x-1, y) || GetShip(x + sh->GetSize(), y)) return 0;
+        }
+        return 1;
     }
 
     bool ValidBoard() {
-        int CountShip[4];
-        for (int i = 0; i < GetSize(); i++) {
-            for (int j = 0; j < GetSize(); j++) {
-                if (_board[i][j].GetShip()) {
-                    CountShip[_board[i][j].GetShip()->GetSize() - 1]++;
-                    if (_board[i+1][j].GetShip() != _board[i][j].GetShip() || 
-                        _board[i][j+1].GetShip() != _board[i][j].GetShip() || 
-                        _board[i+1][j+1].GetShip() != _board[i][j].GetShip()) {
+        list<Ship *> BufShip;
+        for (int i=0; i < 4; i++) {
+            BufShip = GetListShip(i);
+            for (auto& it: BufShip) {
+                if (!ValidShip(it)) return 0;
+            }
+        }
+        return 1;
+    }
+
+    
+
+    
+   /* bool ValidBoard() {
+        int CountShip[4] = {0, 0, 0, 0};
+        for (int i = 0; i < _BoardSize; i++) {
+            for (int j = 0; j < _BoardSize; j++) {
+                if (Ship *sh = GetShip(i, j)) {
+                    CountShip[sh->GetSize() - 1]++;
+                    if (GetShip(i+1, j  ) != sh || 
+                        GetShip(i,   j+1) != sh || 
+                        GetShip(i+1, j+1) != sh) {
                         return 0;
                     }
                 }
             }
         }
-        if (CountShip[0]   != _1DeckShipCount ||
-            CountShip[1]/2 != _2DeckShipCount ||
-            CountShip[2]/3 != _3DeckShipCount ||
-            CountShip[3]/4 != _4DeckShipCount) {
+        if (CountShip[0]   != _1Deck ||
+            CountShip[1]/2 != _2Deck ||
+            CountShip[2]/3 != _3Deck ||
+            CountShip[3]/4 != _4Deck) {
                 return 0;
         }
         return true;
-    }
-
+    }*/
+    /*
     //???
     Stat GetStat(const int x, const int y) {
         return _board[x][y].GetStat();
-    }
+    }*/
 
     //???
-    Ship* GetShip(const int x, const int y, const Direction div, const int size) {
-        if (x <= _BoardSize && y < _BoardSize && _board[x][y].GetShip() != NULL) {
-            return _board[x][y].GetShip();
-        }
-    }
+    
 };
 
 #endif //GAMEBOARD_H

@@ -5,9 +5,13 @@
 
 int main(int argc, char** argv)
 {
-    GameBoard asdf(10);
-    asdf.SetShip(1, 4, HORIZONTAL, 3);
-    asdf.DelShip(1, 4);
+    GameBoard asdf;
+    asdf.SetShip(0, 3, HORIZONTAL, 3);
+    cout << asdf.ValidBoard() << endl;
+    asdf.SetShip(0, 2, HORIZONTAL, 1);
+    cout << asdf.ValidBoard() << endl;
+    asdf.DelShip(3, 2);
+    asdf.PrintBoard();
     GameBoardCell cell(1, 2);
     deque<deque<int>> mas;
     mas.resize(10);

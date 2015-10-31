@@ -22,7 +22,7 @@ class GameBoardCell {
 public:
     GameBoardCell(int x, int y);
     ~GameBoardCell() {
-        cout << "del cell" << _x << " "<< _y << endl;
+        //cout << "del cell" << _x << " "<< _y << endl;
     };
     void SetPos(const int x, const int y);
     void SetStat (const Stat st);

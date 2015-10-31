@@ -22,9 +22,7 @@ public:
             it->SetShip(this);
         }
     }
-    ~Ship() {}
-
-    void DestroyShip() {
+    ~Ship() {
         for (auto& it: _BufShip) {
             it->SetStat(EMPTY);
             it->SetShip(NULL);
@@ -41,6 +39,15 @@ public:
 
     int GetSize() {
         return _SizeShip;
+    }
+    int GetDir() {
+        return _Dir;
+    }
+    int GetX() {
+        return _BufShip.front()->GetPosX();
+    }
+    int GetY() {
+        return _BufShip.front()->GetPosY();
     }
     bool ShotInShip(int x, int y) {
 
