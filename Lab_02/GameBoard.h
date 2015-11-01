@@ -65,6 +65,16 @@ public:
         }
     }
 
+    void PrintBoard() const {
+        for (int i = 0; i < _BoardSize; i++) {
+            for (int j = 0; j < _BoardSize; j++) {
+                cout << GetCell(i, j)->GetStat();
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+
     bool SetShip(const int x, const int y, const Direction dir, const int size) {
         list <GameBoardCell *> mas;
         if (dir == HORIZONTAL) {
@@ -81,6 +91,10 @@ public:
             }         
         }
         Ship *buf = new Ship(size, mas, dir);
+        if (!CheckShip(buf)) {
+            delete(buf);
+            return 0;
+        }
         MasShip[size-1].push_back(buf); 
         return 1;
     }
@@ -103,77 +117,47 @@ public:
         }
     }
 
-    void PrintBoard() {
-        for (int i = 0; i < _BoardSize; i++) {
-            for (int j = 0; j < _BoardSize; j++) {
-                cout << GetCell(i, j)->GetStat();
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }
-
-    bool ValidShip(Ship *sh){
+    bool CheckShip(Ship *sh) const{
         int x = sh->GetX();
         int y = sh->GetY();
-        PrintBoard();
+        int size = sh->GetSize();
+        //PrintBoard();
         if (sh->GetDir() == HORIZONTAL) {
-            for (int i = y-1; i < y + sh->GetSize() + 1; i++) {
+            for (int i = y-1; i < y + size + 1; i++) {
                 if (GetShip(x-1, i) || GetShip(x+1, i)) return 0;
             }
-            if (GetShip(x-1, y) || GetShip(x, y + sh->GetSize())) return 0;
+            if (GetShip(x-1, y) || GetShip(x, y + size)) return 0;
         } else {
-            for (int i = x-1; i < x + sh->GetSize() + 1; i++) {
+            for (int i = x-1; i < x + size + 1; i++) {
                 if (GetShip(i, y-1) || GetShip(i, y+1)) return 0;
             }
-            if(GetShip(x-1, y) || GetShip(x + sh->GetSize(), y)) return 0;
+            if(GetShip(x-1, y) || GetShip(x + size, y)) return 0;
         }
         return 1;
     }
 
-    bool ValidBoard() {
+    void ClearBoard() {
+        for (int i = 0; i < _BoardSize; i++) {
+            for (int j = 0; j < _BoardSize; j++) {
+                GetCell(i, j)->ClearCell();
+            }
+        }
+    }
+
+    bool ValidBoard() const {
         list<Ship *> BufShip;
         for (int i=0; i < 4; i++) {
             BufShip = GetListShip(i);
             for (auto& it: BufShip) {
-                if (!ValidShip(it)) return 0;
+                if (!CheckShip(it)) return 0;
             }
         }
         return 1;
     }
 
-    
+    bool GenerateShip() {
 
-    
-   /* bool ValidBoard() {
-        int CountShip[4] = {0, 0, 0, 0};
-        for (int i = 0; i < _BoardSize; i++) {
-            for (int j = 0; j < _BoardSize; j++) {
-                if (Ship *sh = GetShip(i, j)) {
-                    CountShip[sh->GetSize() - 1]++;
-                    if (GetShip(i+1, j  ) != sh || 
-                        GetShip(i,   j+1) != sh || 
-                        GetShip(i+1, j+1) != sh) {
-                        return 0;
-                    }
-                }
-            }
-        }
-        if (CountShip[0]   != _1Deck ||
-            CountShip[1]/2 != _2Deck ||
-            CountShip[2]/3 != _3Deck ||
-            CountShip[3]/4 != _4Deck) {
-                return 0;
-        }
-        return true;
-    }*/
-    /*
-    //???
-    Stat GetStat(const int x, const int y) {
-        return _board[x][y].GetStat();
-    }*/
-
-    //???
+    }
     
 };
 

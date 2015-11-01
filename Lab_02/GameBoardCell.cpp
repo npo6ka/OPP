@@ -17,18 +17,23 @@ void GameBoardCell::SetShip (Ship* const sh) {
     _sh = sh;
 }
 
-int GameBoardCell::GetPosX() const {
+void GameBoardCell::ClearCell () {
+    _sh = NULL;
+    _state = EMPTY;
+}
+
+int GameBoardCell::GetPosX () const {
     return _x;
 }
 
-int GameBoardCell::GetPosY() const {
+int GameBoardCell::GetPosY () const {
     return _y;
 }
 
-Ship* GameBoardCell::GetShip() const {
+Ship* GameBoardCell::GetShip () const {
     return _sh;
 }
 
-Stat GameBoardCell::GetStat() const {
+Stat GameBoardCell::GetStat () const {
     return _state;
 }

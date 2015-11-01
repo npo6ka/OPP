@@ -20,13 +20,14 @@ class GameBoardCell {
     int   _x;
     int   _y;
 public:
-    GameBoardCell(int x, int y);
+    GameBoardCell(int, int);
     ~GameBoardCell() {
         //cout << "del cell" << _x << " "<< _y << endl;
     };
-    void SetPos(const int x, const int y);
-    void SetStat (const Stat st);
-    void SetShip (Ship* const sh);
+    void SetPos(const int, const int);
+    void SetStat (const Stat);
+    void SetShip (Ship* const);
+    void ClearCell ();
     int GetPosX() const;
     int GetPosY() const;
     Ship* GetShip() const;
