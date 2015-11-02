@@ -7,17 +7,13 @@
 #include <list>
 #include <array>
 #include <algorithm>
+#include <time.h>
 
 #define _BoardSize 10
-
-enum ShipCount{
-    _1Deck = 4,
-    _2Deck = 3,
-    _3Deck = 2,
-    _4Deck = 1
-};
+#define CountGeneration 100
 
 class GameBoard {
+    static const int ShipCount[4];
     GameBoardCell *_board[_BoardSize][_BoardSize];
     array<list<Ship *>, 4> MasShip;
 
@@ -35,6 +31,8 @@ class GameBoard {
             }
         }
     }
+
+
 public:
     GameBoard() {
         Generate();
@@ -44,7 +42,7 @@ public:
     }
 
     GameBoardCell* GetCell(const int x, const int y) const {
-        if (x < 0 || x > _BoardSize || y < 0 || y > _BoardSize) {
+        if (x < 0 || x >= _BoardSize || y < 0 || y >= _BoardSize) {
             return NULL;
         } else { 
             return _board[x][y];
@@ -79,13 +77,13 @@ public:
         list <GameBoardCell *> mas;
         if (dir == HORIZONTAL) {
             for (int i = 0; i < size; i++) {
-                if (GetShip(x, y+i) == NULL) {
+                if (GetCell(x, y+i) != NULL && GetShip(x, y+i) == NULL) {
                     mas.push_back(GetCell(x, y+i));
                 } else return 0;
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (GetShip(x+i, y) == NULL) {
+                if (GetCell(x, y+i) != NULL && GetShip(x+i, y) == NULL) {
                     mas.push_back(GetCell(x+i, y));
                 } else return 0;
             }         
@@ -146,8 +144,9 @@ public:
 
     bool ValidBoard() const {
         list<Ship *> BufShip;
-        for (int i=0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             BufShip = GetListShip(i);
+            if (BufShip.size() != ShipCount[i]) return 0; 
             for (auto& it: BufShip) {
                 if (!CheckShip(it)) return 0;
             }
@@ -155,8 +154,35 @@ public:
         return 1;
     }
 
-    bool GenerateShip() {
+     bool RankingShip(int count) {
+        ClearBoard();
+        for (int i = 4 - 1; i >= 0; i--) {
+            int x, y, BufX, BufY;
+            Direction dir;
+            for (int j = ShipCount[i]-1; j >= 0; j--) {
+                BufX = x = rand() % _BoardSize;
+                BufY = y = rand() % _BoardSize;
+                dir = Direction(rand() % 2);
+                while (!(SetShip(x, y, dir, ShipCount[i]) || SetShip(x, y, (Direction)(!dir), ShipCount[i]))) {
+                    if (++y >= _BoardSize) {
+                        y = 0;
+                        if (++x >= _BoardSize) x = 0;
+                    } 
+                    if (y == BufX && x == BufY) break;
+                }
+                PrintBoard();
+            }
+        }
+        if (!ValidBoard()) {
+            if (--count > 0) {
+                return GenerateShip(); 
+            } else return 0;
+        } else return 1; 
+    }
 
+    bool GenerateShip() {       
+        srand(time(0));
+        return RankingShip(CountGeneration);
     }
     
 };
