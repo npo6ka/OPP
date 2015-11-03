@@ -158,6 +158,7 @@ public:
 
     bool RankingShip(int count) {
         ClearBoard();
+        int Optimize = _BoardSize % 3? 3: (_BoardSize % 2? 2: 1);
         for (int i = 4 - 1; i >= 0; i--) {
             int x, y, BufX, BufY;
             Direction dir;
@@ -166,9 +167,9 @@ public:
                 BufY = y = rand() % _BoardSize;
                 dir = Direction(rand() % 2);
                 while (!(SetShip(x, y, dir, i+1) || SetShip(x, y, (Direction)(!dir), i+1))) {
-                    if (++y >= _BoardSize) {
-                        y = 0;
-                        if (++x >= _BoardSize) x = 0;
+                    if ((y += Optimize) >= _BoardSize) {
+                        y -= _BoardSize;
+                        if ((x += Optimize) >= _BoardSize) x -= _BoardSize;
                     } 
                     if (y == BufY && x == BufX) {
                         if (count > 0) {
