@@ -83,7 +83,7 @@ public:
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (GetCell(x, y+i) != NULL && GetShip(x+i, y) == NULL) {
+                if (GetCell(x+i, y) != NULL && GetShip(x+i, y) == NULL) {
                     mas.push_back(GetCell(x+i, y));
                 } else return 0;
             }         
@@ -119,12 +119,11 @@ public:
         int x = sh->GetX();
         int y = sh->GetY();
         int size = sh->GetSize();
-        //PrintBoard();
         if (sh->GetDir() == HORIZONTAL) {
             for (int i = y-1; i < y + size + 1; i++) {
                 if (GetShip(x-1, i) || GetShip(x+1, i)) return 0;
             }
-            if (GetShip(x-1, y) || GetShip(x, y + size)) return 0;
+            if (GetShip(x, y-1) || GetShip(x, y + size)) return 0;
         } else {
             for (int i = x-1; i < x + size + 1; i++) {
                 if (GetShip(i, y-1) || GetShip(i, y+1)) return 0;
@@ -140,6 +139,9 @@ public:
                 GetCell(i, j)->ClearCell();
             }
         }
+        for (int j = 0; j < 4; j++) {
+            MasShip[j].clear();
+        }
     }
 
     bool ValidBoard() const {
@@ -154,7 +156,7 @@ public:
         return 1;
     }
 
-     bool RankingShip(int count) {
+    bool RankingShip(int count) {
         ClearBoard();
         for (int i = 4 - 1; i >= 0; i--) {
             int x, y, BufX, BufY;
@@ -163,25 +165,28 @@ public:
                 BufX = x = rand() % _BoardSize;
                 BufY = y = rand() % _BoardSize;
                 dir = Direction(rand() % 2);
-                while (!(SetShip(x, y, dir, ShipCount[i]) || SetShip(x, y, (Direction)(!dir), ShipCount[i]))) {
+                while (!(SetShip(x, y, dir, i+1) || SetShip(x, y, (Direction)(!dir), i+1))) {
                     if (++y >= _BoardSize) {
                         y = 0;
                         if (++x >= _BoardSize) x = 0;
                     } 
-                    if (y == BufX && x == BufY) break;
+                    if (y == BufY && x == BufX) {
+                        if (count > 0) {
+                            return RankingShip(count - 1);
+                        } else return 0;
+                    }
                 }
-                PrintBoard();
             }
         }
         if (!ValidBoard()) {
-            if (--count > 0) {
-                return GenerateShip(); 
+            if (count > 0) {
+                return RankingShip(count - 1); 
             } else return 0;
         } else return 1; 
     }
 
     bool GenerateShip() {       
-        srand(time(0));
+        srand(clock()+time(0));
         return RankingShip(CountGeneration);
     }
     

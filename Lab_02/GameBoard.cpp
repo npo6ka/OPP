@@ -1,3 +1,3 @@
 #include "GameBoard.h"
 
-const int GameBoard::ShipCount[4] = {1,2,3,4};
+const int GameBoard::ShipCount[4] = {4,3,2,1};
