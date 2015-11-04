@@ -28,14 +28,6 @@ public:
             it->SetShip(NULL);
         }
     }
-    bool ValidShip() {
-        for (auto& it: _BufShip) {
-            if (it->GetShip() != this) {
-                return 0;
-            }
-        }
-        return 1;
-    }
 
     int GetSize() {
         return _SizeShip;
@@ -48,14 +40,7 @@ public:
     }
     int GetY() {
         return _BufShip.front()->GetPosY();
-    }
-    bool ShotInShip(int x, int y) {
-
-    }
-    void SetShip() {
-
-    }
-    
+    }    
 };
 
 #endif //SHIP_H

@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     cout << asdf.ValidBoard() << endl;
     asdf.DelShip(3, 2);*/
     time_t buf2 = clock();
-    for (int i=0; i < 10000; i++) {
+    for (int i=0; i < 9500; i++) {
         //cout << "counter: " << i << endl;
         asdf.GenerateShip();
         //asdf.PrintBoard();
@@ -20,6 +20,7 @@ int main(int argc, char** argv)
     buf2 = clock() - buf2;
     cout << "Time:" << buf2 << endl;
     GameBoardCell cell(1, 2);
-    //asdf.PrintBoard();
+
+    asdf.PrintBoard();
     return 0;
 }
