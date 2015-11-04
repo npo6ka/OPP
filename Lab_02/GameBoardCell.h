@@ -21,17 +21,15 @@ class GameBoardCell {
     int   _y;
 public:
     GameBoardCell(int, int);
-    ~GameBoardCell() {
-        //cout << "del cell" << _x << " "<< _y << endl;
-    };
+    ~GameBoardCell(void) {};
     void SetPos(const int, const int);
     void SetStat (const Stat);
     void SetShip (Ship* const);
-    void ClearCell ();
-    int GetPosX() const;
-    int GetPosY() const;
-    Ship* GetShip() const;
-    Stat GetStat() const;
+    void ClearCell (void);
+    int GetPosX(void) const;
+    int GetPosY(void) const;
+    Ship* GetShip(void) const;
+    Stat GetStat(void) const;
 };
 
 #endif //GAMECELL_H

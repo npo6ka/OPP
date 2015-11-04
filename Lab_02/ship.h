@@ -5,6 +5,15 @@
 #include "GameBoardCell.h"
 #include <deque>
 
+#define MAX_SIZE_SHIP 4
+
+enum SizeShip{
+    DECK1 = 1,
+    DECK2 = 2,
+    DECK3 = 3,
+    DECK4 = 4
+};
+
 enum Direction {
     HORIZONTAL = 0,
     VERTICAL   = 1,
@@ -15,32 +24,41 @@ class Ship {
     int _SizeShip;
     Direction _Dir;
 public:
-    Ship (int SizeShip,  list <GameBoardCell *> BufShip, Direction dir):
-        _SizeShip(SizeShip), _BufShip(BufShip), _Dir(dir) {
-        for (auto& it: _BufShip) {
-            it->SetStat(DECK);
-            it->SetShip(this);
-        }
-    }
-    ~Ship() {
-        for (auto& it: _BufShip) {
-            it->SetStat(EMPTY);
-            it->SetShip(NULL);
-        }
-    }
+    Ship (const int, const list <GameBoardCell *>, const Direction);
+    ~Ship(void);
+    virtual int GetSize(void) const = 0;
+    int GetDir(void) const;
+    int GetX(void) const;
+    int GetY(void) const;  
+};
 
-    int GetSize() {
-        return _SizeShip;
-    }
-    int GetDir() {
-        return _Dir;
-    }
-    int GetX() {
-        return _BufShip.front()->GetPosX();
-    }
-    int GetY() {
-        return _BufShip.front()->GetPosY();
-    }    
+class Ship1: public Ship {
+public:
+    Ship1 (const int, const list <GameBoardCell *>, const Direction);
+    ~Ship1() {}
+    int GetSize(void) const;
+};
+
+class Ship2: public Ship {
+public:
+    Ship2 (const int, const list <GameBoardCell *>, const Direction);
+    ~Ship2() {}
+
+    int GetSize(void) const;
+};
+
+class Ship3: public Ship {
+public:
+    Ship3 (const int, const list <GameBoardCell *>, const Direction);
+    ~Ship3() {}
+    int GetSize(void) const;
+};
+
+class Ship4: public Ship {
+public:
+    Ship4 (const int, const list <GameBoardCell *>, const Direction);
+    ~Ship4() {}
+    int GetSize(void) const;
 };
 
 #endif //SHIP_H
