@@ -3,29 +3,36 @@
 
 #include <deque>
 
+void Valid(const GameBoard const buf) {
+    if (buf.ValidBoard()) {
+        cout << "Board Valid!" << endl;
+    } else  cout << "Board Not valid(" << endl;
+}
+
 int main(int argc, char** argv)
 {
-    GameBoard asdf;
-    asdf.SetShip(0, 3, HORIZONTAL, 3);
-    cout << asdf.ValidBoard() << endl;
-    asdf.SetShip(0, 2, HORIZONTAL, 1);
-    cout << asdf.ValidBoard() << endl;
-    asdf.DelShip(3, 2);
+    GameBoard board1;
+    board1.SetShip(5, 5, VERTICAL,   4);
+    board1.SetShip(2, 7, VERTICAL,   3);
+    board1.SetShip(1, 1, HORIZONTAL, 3);
+    board1.SetShip(8, 1, HORIZONTAL, 2);
+    board1.SetShip(5, 1, HORIZONTAL, 2);
+    Valid(board1);
+    board1.PrintBoard();
+    board1.SetShip(6, 8, VERTICAL,   2);
+    board1.SetShip(0, 7, VERTICAL,   1);
+    board1.SetShip(0, 5, VERTICAL,   1);
+    board1.SetShip(2, 5, VERTICAL,   1);
+    board1.SetShip(4, 9, VERTICAL,   1);
+    Valid(board1);
+    board1.PrintBoard();
+    cout << "Del 4 deck ship..." << endl;
+    board1.DelShip(7, 5);
+    board1.PrintBoard();
 
-
-
-
-
-    time_t buf2 = clock();
-    for (int i=0; i < 9500; i++) {
-        cout << "counter: " << i << endl;
-        asdf.GenerateShip();
-        asdf.PrintBoard();
-    }
-    buf2 = clock() - buf2;
-    cout << "Time:" << buf2 << endl;
-    GameBoardCell cell(1, 2);
-
-    asdf.PrintBoard();
+    GameBoard board2;
+    board2.GenerateShip();
+    Valid(board2);
+    board2.PrintBoard();
     return 0;
 }

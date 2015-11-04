@@ -22,12 +22,10 @@ class GameBoard {
     void Remove(void);
     bool RankingShip(int const);
 
-    
-
 public:
     GameBoard(void);
     ~GameBoard(void);
-
+    GameBoard(const GameBoard &);
     GameBoardCell* GetCell(const int, const int) const;
     Ship* GetShip(const int, const int) const;
     list<Ship *> GetListShip(const int) const;

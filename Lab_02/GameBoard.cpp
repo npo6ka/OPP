@@ -52,6 +52,20 @@ GameBoard::GameBoard() {
 GameBoard::~GameBoard() {
     Remove();
 }
+GameBoard::GameBoard(const GameBoard &obj) {
+    this->Generate();
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            this->GetCell(i, j)->SetStat(obj.GetCell(i,j)->GetStat());
+            this->GetCell(i, j)->SetShip(obj.GetCell(i,j)->GetShip());
+        }
+    }
+    for (int i = 0; i < MAX_SIZE_SHIP; i++) {
+        for (auto& it: obj.GetListShip(i)) {
+            this->AddShipAtList(it);
+        }
+    }
+}
 
 GameBoardCell* GameBoard::GetCell(const int x, const int y) const {
     if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
