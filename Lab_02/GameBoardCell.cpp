@@ -2,6 +2,11 @@
 
 GameBoardCell::GameBoardCell(int x, int y) : _x(x), _y(y), _state(EMPTY), _sh(NULL)  {}
 
+GameBoardCell::GameBoardCell(const GameBoardCell &obj) {
+    this->SetPos(obj.GetPosX(), obj.GetPosY());
+    this->SetStat(obj.GetStat());
+}
+
 void GameBoardCell::SetPos(const int x, const int y) {
     _x = x;
     _y = y;

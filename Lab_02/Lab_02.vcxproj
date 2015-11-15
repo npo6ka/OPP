@@ -84,8 +84,11 @@
     <ClCompile Include="ship.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleGUI.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameBoard.h" />
     <ClInclude Include="GameBoardCell.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="ship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

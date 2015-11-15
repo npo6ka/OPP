@@ -21,27 +21,27 @@ enum Direction {
 
 class Ship {
     list <GameBoardCell *> _BufShip; 
-    int _SizeShip;
+    int state;
     Direction _Dir;
 public:
-    Ship (const int, const list <GameBoardCell *>, const Direction);
+    Ship (const list <GameBoardCell *>, const Direction);
     ~Ship(void);
     virtual int GetSize(void) const = 0;
-    int GetDir(void) const;
+    Direction GetDir(void) const;
     int GetX(void) const;
     int GetY(void) const;  
 };
 
 class Ship1: public Ship {
 public:
-    Ship1 (const int, const list <GameBoardCell *>, const Direction);
+    Ship1 (const list <GameBoardCell *>, const Direction);
     ~Ship1() {}
     int GetSize(void) const;
 };
 
 class Ship2: public Ship {
 public:
-    Ship2 (const int, const list <GameBoardCell *>, const Direction);
+    Ship2 (const list <GameBoardCell *>, const Direction);
     ~Ship2() {}
 
     int GetSize(void) const;
@@ -49,14 +49,14 @@ public:
 
 class Ship3: public Ship {
 public:
-    Ship3 (const int, const list <GameBoardCell *>, const Direction);
+    Ship3 (const list <GameBoardCell *>, const Direction);
     ~Ship3() {}
     int GetSize(void) const;
 };
 
 class Ship4: public Ship {
 public:
-    Ship4 (const int, const list <GameBoardCell *>, const Direction);
+    Ship4 (const list <GameBoardCell *>, const Direction);
     ~Ship4() {}
     int GetSize(void) const;
 };

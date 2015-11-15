@@ -22,6 +22,7 @@ class GameBoardCell {
 public:
     GameBoardCell(int, int);
     ~GameBoardCell(void) {};
+    GameBoardCell(const GameBoardCell &);
     void SetPos(const int, const int);
     void SetStat (const Stat);
     void SetShip (Ship* const);

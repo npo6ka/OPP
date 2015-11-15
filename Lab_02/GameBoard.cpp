@@ -2,7 +2,6 @@
 
 const int GameBoard::ShipCount[MAX_SIZE_SHIP] = {4,3,2,1};
 
-
 void GameBoard::Generate() {
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
@@ -49,20 +48,23 @@ bool GameBoard::RankingShip(int const count) {
 GameBoard::GameBoard() {
     Generate();
 }
-GameBoard::~GameBoard() {
+GameBoard::~GameBoard() {   
+    for (int i = 0; i < MAX_SIZE_SHIP; i++) {
+        for (auto& it: GetListShip(i)) {
+            DelShip(it->GetX(), it->GetY());
+        }
+    }
     Remove();
 }
 GameBoard::GameBoard(const GameBoard &obj) {
-    this->Generate();
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
-            this->GetCell(i, j)->SetStat(obj.GetCell(i,j)->GetStat());
-            this->GetCell(i, j)->SetShip(obj.GetCell(i,j)->GetShip());
+            this->_board[i][j] = new GameBoardCell(*obj.GetCell(i, j));
         }
     }
     for (int i = 0; i < MAX_SIZE_SHIP; i++) {
         for (auto& it: obj.GetListShip(i)) {
-            this->AddShipAtList(it);
+            SetShip(it->GetX(), it->GetY(), it->GetDir(), it->GetSize());
         }
     }
 }
@@ -123,17 +125,17 @@ void GameBoard::ClearListShip() {
     }
 }
 
-Ship* NewShip1(int size, list <GameBoardCell *> buf, Direction dir) {
-    return new Ship1(size, buf, dir);
+Ship* NewShip1(list <GameBoardCell *> buf, Direction dir) {
+    return new Ship1(buf, dir);
 }
-Ship* NewShip2(int size, list <GameBoardCell *> buf, Direction dir) {
-    return new Ship2(size, buf, dir);
+Ship* NewShip2(list <GameBoardCell *> buf, Direction dir) {
+    return new Ship2(buf, dir);
 }
-Ship* NewShip3(int size, list <GameBoardCell *> buf, Direction dir) {
-    return new Ship3(size, buf, dir);
+Ship* NewShip3(list <GameBoardCell *> buf, Direction dir) {
+    return new Ship3(buf, dir);
 }
-Ship* NewShip4(int size, list <GameBoardCell *> buf, Direction dir) {
-    return new Ship4(size, buf, dir);
+Ship* NewShip4(list <GameBoardCell *> buf, Direction dir) {
+    return new Ship4(buf, dir);
 }
 
 bool GameBoard::SetShip(const int x, const int y, const Direction dir, const int size) {
@@ -154,8 +156,8 @@ bool GameBoard::SetShip(const int x, const int y, const Direction dir, const int
             } else return 0;
         }         
     }
-    Ship *(*NewShip[MAX_SIZE_SHIP])(int size, list <GameBoardCell *> buf, Direction dir) = {NewShip1, NewShip2, NewShip3, NewShip4};
-    Ship *buf = NewShip[size-1](size, mas, dir);
+    Ship *(*NewShip[MAX_SIZE_SHIP])(list <GameBoardCell *> buf, Direction dir) = {NewShip1, NewShip2, NewShip3, NewShip4};
+    Ship *buf = NewShip[size-1](mas, dir);
     if (!CheckShip(buf)) {
         delete(buf);
         return 0;
