@@ -3,7 +3,7 @@
 class Player {
     GameBoard _MyBoard;
     GameBoard _SecBoard;
-    string nick;
+    string    _nick;
 public:
     Player() {}
     ~Player() {}

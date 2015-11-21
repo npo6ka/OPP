@@ -15,50 +15,70 @@ enum SizeShip{
 };
 
 enum Direction {
-    HORIZONTAL = 0,
-    VERTICAL   = 1,
+    UNK        = -1,
+    HORIZONTAL =  0,
+    VERTICAL   =  1,
 };
 
-class Ship {
-    list <GameBoardCell *> _BufShip; 
-    int state;
-    Direction _Dir;
+class Ship: public enable_shared_from_this<Ship>{
+    list <shared_ptr<GameBoardCell>> _bufCells;
+    Direction _dir;
+    int _status;
+    void sortCell();
+protected:
+    bool tryAddCell(list <shared_ptr<GameBoardCell>> cells);
 public:
-    Ship (const list <GameBoardCell *>, const Direction);
-    ~Ship(void);
-    virtual int GetSize(void) const = 0;
-    Direction GetDir(void) const;
-    int GetX(void) const;
-    int GetY(void) const;  
+    Ship ();
+    virtual ~Ship(void);
+    
+    bool checkShip();
+    Direction resetDir();
+
+    virtual int getSize(void) const = 0;
+    virtual bool addCells(list <shared_ptr<GameBoardCell>> cells) = 0;
+    list<shared_ptr<GameBoardCell>> getCells();
+    void clearShip();
+    bool setShipInCells();
+    void setDir(Direction dir);
+    Direction getDir(void) const;
+    int getX(void) const;
+    int getY(void) const;
 };
 
 class Ship1: public Ship {
 public:
-    Ship1 (const list <GameBoardCell *>, const Direction);
+    Ship1 ();
+    Ship1 (const list <shared_ptr<GameBoardCell>>);
     ~Ship1() {}
-    int GetSize(void) const;
+    bool addCells(list <shared_ptr<GameBoardCell>>);
+    int getSize(void) const;
 };
 
 class Ship2: public Ship {
 public:
-    Ship2 (const list <GameBoardCell *>, const Direction);
+    Ship2 ();
+    Ship2 (const list <shared_ptr<GameBoardCell>>);
     ~Ship2() {}
-
-    int GetSize(void) const;
+    bool addCells(list <shared_ptr<GameBoardCell>>);
+    int getSize(void) const;
 };
 
 class Ship3: public Ship {
 public:
-    Ship3 (const list <GameBoardCell *>, const Direction);
+    Ship3 ();
+    Ship3 (const list <shared_ptr<GameBoardCell>>);
     ~Ship3() {}
-    int GetSize(void) const;
+    bool addCells(list <shared_ptr<GameBoardCell>>);
+    int getSize(void) const;
 };
 
 class Ship4: public Ship {
 public:
-    Ship4 (const list <GameBoardCell *>, const Direction);
+    Ship4 ();
+    Ship4 (const list <shared_ptr<GameBoardCell>>);
     ~Ship4() {}
-    int GetSize(void) const;
+    bool addCells(list <shared_ptr<GameBoardCell>>);
+    int getSize(void) const;
 };
 
 #endif //SHIP_H

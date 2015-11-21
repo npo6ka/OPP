@@ -81,7 +81,7 @@
     <ClCompile Include="GameBoard.cpp" />
     <ClCompile Include="GameBoardCell.cpp" />
     <ClCompile Include="lab_02.cpp" />
-    <ClCompile Include="ship.cpp" />
+    <ClCompile Include="Ship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleGUI.h" />
@@ -89,7 +89,7 @@
     <ClInclude Include="GameBoard.h" />
     <ClInclude Include="GameBoardCell.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="ship.h" />
+    <ClInclude Include="Ship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

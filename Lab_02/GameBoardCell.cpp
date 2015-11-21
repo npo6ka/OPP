@@ -1,42 +1,45 @@
 #include "GameBoardCell.h"
 
-GameBoardCell::GameBoardCell(int x, int y) : _x(x), _y(y), _state(EMPTY), _sh(NULL)  {}
-
-GameBoardCell::GameBoardCell(const GameBoardCell &obj) {
-    this->SetPos(obj.GetPosX(), obj.GetPosY());
-    this->SetStat(obj.GetStat());
+GameBoardCell::GameBoardCell(int x, int y) : _x(x), _y(y), _state(EMPTY) {}
+GameBoardCell::~GameBoardCell() { 
+    _sh.reset();
 }
 
-void GameBoardCell::SetPos(const int x, const int y) {
+GameBoardCell::GameBoardCell(const GameBoardCell &obj) {
+    this->setPos(obj.getPosX(), obj.getPosY());
+    this->setStat(obj.getStat());
+}
+
+void GameBoardCell::setPos(const int x, const int y) {
     _x = x;
     _y = y;
 }
 
-void GameBoardCell::SetStat (const Stat st) {
+void GameBoardCell::setStat (const Stat st) {
     _state = st;
 }
 
-void GameBoardCell::SetShip (Ship* const sh) {
+void GameBoardCell::setShip (shared_ptr<Ship> const sh) {
     _sh = sh;
 }
 
-void GameBoardCell::ClearCell () {
-    _sh = NULL;
+void GameBoardCell::clearCell () {
+    _sh.reset();
     _state = EMPTY;
 }
 
-int GameBoardCell::GetPosX () const {
+int GameBoardCell::getPosX () const {
     return _x;
 }
 
-int GameBoardCell::GetPosY () const {
+int GameBoardCell::getPosY () const {
     return _y;
 }
 
-Ship* GameBoardCell::GetShip () const {
-    return _sh;
+shared_ptr<Ship> GameBoardCell::getShip () const {
+    return _sh.lock();
 }
 
-Stat GameBoardCell::GetStat () const {
+Stat GameBoardCell::getStat () const {
     return _state;
 }

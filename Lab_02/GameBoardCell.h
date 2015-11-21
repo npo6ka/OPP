@@ -1,7 +1,7 @@
 #ifndef GAMECELL_H
 #define GAMECELL_H
-
-#include<iostream>
+#include <memory>
+#include <iostream>
  
 using namespace std;
 
@@ -16,21 +16,21 @@ class Ship;
 
 class GameBoardCell {
     Stat  _state;
-	Ship* _sh;
+	weak_ptr<Ship> _sh;
     int   _x;
     int   _y;
 public:
     GameBoardCell(int, int);
-    ~GameBoardCell(void) {};
+    ~GameBoardCell(void);
     GameBoardCell(const GameBoardCell &);
-    void SetPos(const int, const int);
-    void SetStat (const Stat);
-    void SetShip (Ship* const);
-    void ClearCell (void);
-    int GetPosX(void) const;
-    int GetPosY(void) const;
-    Ship* GetShip(void) const;
-    Stat GetStat(void) const;
+    void setPos(const int, const int);
+    void setStat (const Stat);
+    void setShip (shared_ptr<Ship> const);
+    void clearCell (void);
+    int getPosX(void) const;
+    int getPosY(void) const;
+    shared_ptr<Ship> getShip(void) const;
+    Stat getStat(void) const;
 };
 
 #endif //GAMECELL_H
