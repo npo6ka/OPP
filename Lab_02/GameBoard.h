@@ -4,7 +4,6 @@
 #include "GameBoardCell.h"
 #include "Ship.h"
 
-#include <list>
 #include <array>
 #include <algorithm>
 #include <time.h>
@@ -14,37 +13,36 @@
 #define AMOUNT_GENERATION 100
 
 class GameBoard {
-    static const int _ShipCount[MAX_SIZE_SHIP];
-    GameBoardCell *_board[BOARD_SIZE][BOARD_SIZE];
-    array<list<shared_ptr<Ship>>, MAX_SIZE_SHIP> _MasShip;
+    static const int _shipCount[MAX_SIZE_SHIP];
+    shared_ptr<GameBoardCell> _board[BOARD_SIZE][BOARD_SIZE];
+    array<list<shared_ptr<Ship>>, MAX_SIZE_SHIP> _masShip;
 
-    void Generate(void);
-    void Remove(void);
-    bool RankingShip(int const);
+    void generate(void);
+    shared_ptr<GameBoardCell> getCell(const int, const int) const;
+    shared_ptr<Ship> getShip(const int, const int) const;
+    list<shared_ptr<Ship>> getListShip(const int) const;
+    bool addShipAtList(const shared_ptr<Ship> &buf);
+
+    bool checkCellsAroundShip(shared_ptr<Ship> const) const;
+    bool removeShipOfList(shared_ptr<Ship> const);
+    //bool rankingShip(int const);
+    bool mergeShip(shared_ptr<Ship> &, shared_ptr<Ship> &);
 
 public:
     GameBoard(void);
     ~GameBoard(void);
     GameBoard(const GameBoard &);
-    GameBoardCell* GetCell(const int, const int) const;
-    shared_ptr<Ship> GetShip(const int, const int) const;
-    list<shared_ptr<Ship>> GetListShip(const int) const;
 
-    void PrintBoard(void) const;
-    bool AddShipAtList(const shared_ptr<Ship> &buf);
-    bool RemoveShipOfList(shared_ptr<Ship> const);
-    void ClearListShip(void);
+    void print(void) const;
 
-    bool SetShip(const int, const int, const Direction, const int);
-    bool DelShip (const int, const int);
+    bool setFullShip(const int, const int, const Direction, const int);
+    bool setDeckShip(const int, const int, const int);
+    bool delShip (const int, const int);
+    void reset(void);
+    void clear(void);
+    bool checkFullBoard(void) const;
 
-    bool CheckShip(shared_ptr<Ship> const) const;
-
-    void ClearBoard(void);
-
-    bool ValidBoard(void) const;
-
-    bool GenerateShip(void);
+    //bool generateShip(void);
     
 };
 

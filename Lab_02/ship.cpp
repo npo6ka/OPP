@@ -1,55 +1,14 @@
 #include "Ship.h"
 
 Ship::Ship (): _status(-1), _dir(UNK) {}
-
 Ship::~Ship() {
     for (auto& it: _bufCells) {
         it->clearCell();
     }
 }
 
-bool Ship::checkShip() {
-    if (getDir() == HORIZONTAL) {
-        for (list<shared_ptr<GameBoardCell>>::iterator it = _bufCells.begin(); *it != _bufCells.back();) {
-                if ((*it)->getPosX() != _bufCells.back()->getPosX()) return 0;
-                if ((*it)->getPosY()+1 != (*(++it))->getPosY()) return 0;
-        }
-    } else { 
-        for (list<shared_ptr<GameBoardCell>>::iterator it = _bufCells.begin(); *it != _bufCells.back();) {
-                if ((*it)->getPosY() != _bufCells.back()->getPosY()) return 0;
-                if ((*it)->getPosX()+1 != (*(++it))->getPosX()) return 0;
-        }
-    }
-    return 1;
-}
-
-void Ship::sortCell() {
-    if (_dir == HORIZONTAL) {
-        _bufCells.sort([](const shared_ptr<GameBoardCell> first, const shared_ptr<GameBoardCell> second) -> bool {
-                        return (first->getPosY() < second->getPosY());  });
-    } else {
-        _bufCells.sort([](const shared_ptr<GameBoardCell> first, const shared_ptr<GameBoardCell> second) -> bool {
-                        return (first->getPosX() < second->getPosX());  });
-    }
-}
-bool Ship::tryAddCell(list <shared_ptr<GameBoardCell>> cells) {
-    _bufCells.splice(_bufCells.end(), cells);
-    if (_bufCells.size() >= 0 && _bufCells.size() <= getSize()) {
-        if (_bufCells.size() == 1) return 1;
-        if (resetDir() == UNK) return 0;
-        sortCell();
-        return checkShip();
-    } else return 0;
-}
-list<shared_ptr<GameBoardCell>> Ship::getCells() {
-    return _bufCells;
-}
-void Ship::clearShip() {
-    for (auto& it: _bufCells) {
-        it->clearCell();
-    }
-    _bufCells.clear();
-    setDir(UNK);
+void Ship::setDir(Direction dir) {
+    _dir = dir;
 }
 Direction Ship::resetDir() {
     if (_bufCells.size() < 2) {
@@ -61,29 +20,77 @@ Direction Ship::resetDir() {
     }
     return getDir();
 }
-
-void Ship::setDir(Direction dir) {
-    _dir = dir;
+void Ship::sortCell() {
+    if (_dir == HORIZONTAL) {
+        _bufCells.sort([](const shared_ptr<GameBoardCell> first, const shared_ptr<GameBoardCell> second) -> bool {
+                        return (first->getPosY() < second->getPosY());  });
+    } else {
+        _bufCells.sort([](const shared_ptr<GameBoardCell> first, const shared_ptr<GameBoardCell> second) -> bool {
+                        return (first->getPosX() < second->getPosX());  });
+    }
+}
+bool Ship::tryAddCell(list <shared_ptr<GameBoardCell>> cells) {
+    _bufCells.splice(_bufCells.end(), cells); //совмещаем листы
+    if (_bufCells.size() >= 0 && _bufCells.size() <= getSize()) { //сумма ячеек не должна превышать размер карабля
+        if (_bufCells.size() == 1) return 1; //если однопалубник, всё проще
+        if (resetDir() == UNK) return 0; //просчитываем новое направление карабля 
+        sortCell();
+        return checkShip();
+    } else return 0;
 }
 
+void Ship::setShipInCells() {   
+    for (auto& it:_bufCells) {
+        it->setShip(shared_from_this());
+    }
+}
+
+list<shared_ptr<GameBoardCell>> Ship::getCells() const{
+    return _bufCells;
+}
 Direction Ship::getDir() const {
     return _dir;
 }
 int Ship::getX() const {
-    return _bufCells.front()->getPosX();
+    if (_bufCells.size()) {
+        return _bufCells.front()->getPosX();
+    } else return -1;
 }
 int Ship::getY() const {
-    return _bufCells.front()->getPosY();
+    if (_bufCells.size()) {
+        return _bufCells.front()->getPosY();
+    } else return -1;
 }    
 
-bool Ship::setShipInCells() {
-    if (_bufCells.size() == getSize() && checkShip()) {
-        for (auto& it:_bufCells) {
-            it->setShip(shared_from_this());
+
+bool Ship::checkShip() {
+    if (getDir()) {
+        for (list<shared_ptr<GameBoardCell>>::iterator it = _bufCells.begin(); *it != _bufCells.back();) {
+                if ((*it)->getPosY() != _bufCells.back()->getPosY()) return 0; //т.к. направление вертикальное, все корабли должны иметь одинаковую координату по У
+                if ((*it)->getPosX()+1 != (*(++it))->getPosX()) return 0; //а каждая последующая ячейка имеет координату Х на 1 больше, чем предыдущая
         }
+        
+    } else { 
+        for (list<shared_ptr<GameBoardCell>>::iterator it = _bufCells.begin(); *it != _bufCells.back();) {
+                if ((*it)->getPosX() != _bufCells.back()->getPosX()) return 0; //т.к. направление горизонтальное, все корабли должны иметь одинаковую координату по Х
+                if ((*it)->getPosY()+1 != (*(++it))->getPosY()) return 0; //а каждая последующая ячейка имеет координату У на 1 больше, чем предыдущая
+        }
+    }
+    return 1;
+}
+bool Ship::checkFill() {
+    if (_bufCells.size() == getSize() && checkShip()) {
         return 1;
     } else return 0;
 }
+void Ship::clearShip() {
+    for (auto& it: _bufCells) {
+        it->clearCell();
+    }
+    _bufCells.clear();
+    setDir(UNK);
+}
+
 
 Ship1::Ship1 (): Ship() {}
 Ship1::Ship1 (list <shared_ptr<GameBoardCell>> bufCells): Ship() {

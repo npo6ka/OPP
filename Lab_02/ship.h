@@ -24,25 +24,28 @@ class Ship: public enable_shared_from_this<Ship>{
     list <shared_ptr<GameBoardCell>> _bufCells;
     Direction _dir;
     int _status;
-    void sortCell();
+
+    void setDir(Direction dir);
+    Direction resetDir();
+    void sortCell();   
 protected:
     bool tryAddCell(list <shared_ptr<GameBoardCell>> cells);
 public:
     Ship ();
     virtual ~Ship(void);
-    
-    bool checkShip();
-    Direction resetDir();
 
-    virtual int getSize(void) const = 0;
     virtual bool addCells(list <shared_ptr<GameBoardCell>> cells) = 0;
-    list<shared_ptr<GameBoardCell>> getCells();
-    void clearShip();
-    bool setShipInCells();
-    void setDir(Direction dir);
+    void setShipInCells();
+    
+    list<shared_ptr<GameBoardCell>> getCells(void) const;
+    virtual int getSize(void) const = 0;
     Direction getDir(void) const;
     int getX(void) const;
     int getY(void) const;
+            
+    bool checkShip(void);
+    bool checkFill(void);
+    void clearShip(void);
 };
 
 class Ship1: public Ship {

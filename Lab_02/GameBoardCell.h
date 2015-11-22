@@ -7,9 +7,7 @@ using namespace std;
 
 enum Stat{
     EMPTY   = 0,
-    MISS    = 1,
-    DECK    = 2,
-    HITDECK = 3
+    DECK    = 1,
 };
 
 class Ship;
