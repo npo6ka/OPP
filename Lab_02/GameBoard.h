@@ -21,11 +21,11 @@ class GameBoard {
     shared_ptr<GameBoardCell> getCell(const int, const int) const;
     shared_ptr<Ship> getShip(const int, const int) const;
     list<shared_ptr<Ship>> getListShip(const int) const;
-    bool addShipAtList(const shared_ptr<Ship> &buf);
 
+    bool addShipAtList(const shared_ptr<Ship> &buf);
     bool checkCellsAroundShip(shared_ptr<Ship> const) const;
     bool removeShipOfList(shared_ptr<Ship> const);
-    //bool rankingShip(int const);
+    bool rankingShip(int const);
     bool mergeShip(shared_ptr<Ship> &, shared_ptr<Ship> &);
 
 public:
@@ -35,6 +35,7 @@ public:
 
     void print(void) const;
 
+    void drowAroundShip(shared_ptr<Ship> const);
     bool setFullShip(const int, const int, const Direction, const int);
     bool setDeckShip(const int, const int, const int);
     bool delShip (const int, const int);
@@ -42,7 +43,7 @@ public:
     void clear(void);
     bool checkFullBoard(void) const;
 
-    //bool generateShip(void);
+    bool generateShip(void);
     
 };
 

@@ -44,7 +44,7 @@ public:
     int getY(void) const;
             
     bool checkShip(void);
-    bool checkFill(void);
+    bool checkFull(void);
     void clearShip(void);
 };
 

@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     board1.setFullShip(4, 9, VERTICAL,   1);
 
     board1.print();
-    board1.setDeckShip(1, 1, 4);
+    board1.setDeckShip(8, 5, 4);
     board1.print();
     board1.setDeckShip(7, 5, 4);
     board1.print();
@@ -78,9 +78,9 @@ int main(int argc, char** argv)
     board1.print();
     board1.reset();
     board1.print();
-    /*GameBoard board2;
-    board2.GenerateShip();
+    GameBoard board2;
+    board2.generateShip();
     Valid(board2);
-    board2.PrintBoard();*/
+    board2.print();
     return 0;
 }

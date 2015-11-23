@@ -78,7 +78,7 @@ bool Ship::checkShip() {
     }
     return 1;
 }
-bool Ship::checkFill() {
+bool Ship::checkFull() {
     if (_bufCells.size() == getSize() && checkShip()) {
         return 1;
     } else return 0;

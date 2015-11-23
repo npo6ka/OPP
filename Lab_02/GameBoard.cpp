@@ -2,8 +2,6 @@
 
 const int GameBoard::_shipCount[MAX_SIZE_SHIP] = {4,3,2,1};
 
-//ship->addCells(list<GameBoardCell *> (1, _board[5][2]));
-
 void GameBoard::generate() {
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
@@ -38,34 +36,34 @@ bool GameBoard::addShipAtList(const shared_ptr<Ship> &buf) {
     } else return 0;
 }
 
-//bool GameBoard::RankingShip(int const count) {
-//    ClearBoard();
-//    for (int i = MAX_SIZE_SHIP - 1; i >= 0; i--) {
-//        int x, y, BufX, BufY;
-//        Direction dir;
-//        for (int j = _ShipCount[i]-1; j >= 0; j--) {
-//            BufX = x = rand() % BOARD_SIZE;
-//            BufY = y = rand() % BOARD_SIZE;
-//            dir = Direction(rand() % 2);
-//            while (!(SetShip(x, y, dir, i+1) || SetShip(x, y, (Direction)(!dir), i+1))) {
-//                if ((y += OPTIMAZE) >= BOARD_SIZE) {
-//                    y -= BOARD_SIZE;
-//                    if ((x += OPTIMAZE) >= BOARD_SIZE) x -= BOARD_SIZE;
-//                } 
-//                if (y == BufY && x == BufX) {
-//                    if (count > 0) {
-//                        return RankingShip(count - 1);
-//                    } else return 0;
-//                }
-//            }
-//        }
-//    }
-//    if (!ValidBoard()) {
-//        if (count > 0) {
-//            return RankingShip(count - 1); 
-//        } else return 0;
-//    } else return 1; 
-//}
+bool GameBoard::rankingShip(int const count) {
+    clear();
+    for (int i = MAX_SIZE_SHIP - 1; i >= 0; i--) {
+        int x, y, BufX, BufY;
+        Direction dir;
+        for (int j = _shipCount[i]-1; j >= 0; j--) {
+            BufX = x = rand() % BOARD_SIZE;
+            BufY = y = rand() % BOARD_SIZE;
+            dir = Direction(rand() % 2);
+            while (!(setFullShip(x, y, dir, i+1) || setFullShip(x, y, (Direction)(!dir), i+1))) {
+                if ((y += OPTIMAZE) >= BOARD_SIZE) {
+                    y -= BOARD_SIZE;
+                    if ((x += OPTIMAZE) >= BOARD_SIZE) x -= BOARD_SIZE;
+                } 
+                if (y == BufY && x == BufX) {
+                    if (count > 0) {
+                        return rankingShip(count - 1);
+                    } else return 0;
+                }
+            }
+        }
+    }
+    if (!checkFullBoard()) {
+        if (count > 0) {
+            return rankingShip(count - 1); 
+        } else return 0;
+    } else return 1; 
+}
 
 GameBoard::GameBoard() {
     generate();
@@ -85,7 +83,7 @@ GameBoard::GameBoard(const GameBoard &obj) {
     }
     for (int i = 0; i < MAX_SIZE_SHIP; i++) {
         for (auto& it: obj.getListShip(i)) {
-            if (it->checkFill()) {
+            if (it->checkFull()) {
                 setFullShip(it->getX(), it->getY(), it->getDir(), it->getSize());
             } else {
                 for (auto& it2: it->getCells()) {
@@ -100,8 +98,8 @@ void GameBoard::print() const {
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
             if (getShip(i, j)) {
-                cout << getShip(i, j)->getSize();
-            } else cout << "0";
+                cout << getShip(i, j)->getSize()+1;
+            } else cout << getCell(i, j)->getStat();
         }
         cout << endl;
     }
@@ -136,6 +134,28 @@ shared_ptr<Ship> NewShip4(list <shared_ptr<GameBoardCell>> buf) {
 shared_ptr<Ship> (*NewShip[MAX_SIZE_SHIP])(list <shared_ptr<GameBoardCell>>) 
     = {NewShip1, NewShip2, NewShip3, NewShip4};
 
+void GameBoard::drowAroundShip(shared_ptr<Ship> const sh) {
+    const int x = sh->getX();
+    const int y = sh->getY();
+    const int size = sh->getCells().size();
+    if (sh->getDir() == HORIZONTAL) {
+        for (int i = y-1; i < y + size + 1; i++) {
+            if (getCell(x-1, i)) getCell(x-1, i)->setStat(HIT);
+            if (getCell(x+1, i)) getCell(x+1, i)->setStat(HIT);
+        } 
+        if (getCell(x, y-1))      getCell(x, y-1)   ->setStat(HIT);
+        if (getCell(x, y + size)) getCell(x, y+size)->setStat(HIT);
+
+    } else {
+        for (int i = x-1; i < x + size + 1; i++) {
+            if (getCell(i, y-1)) getCell(i, y-1)->setStat(HIT);
+            if (getCell(i, y+1)) getCell(i, y+1)->setStat(HIT);
+        }
+        if (getCell(x-1, y))      getCell(x-1, y)->setStat(HIT);
+        if (getCell(x + size, y)) getCell(x+size, y)->setStat(HIT);
+    }
+}
+
 bool GameBoard::setFullShip(const int x, const int y, const Direction dir, const int size) {
     if (size > MAX_SIZE_SHIP) return 0;
     list <shared_ptr<GameBoardCell>> mas;
@@ -154,18 +174,21 @@ bool GameBoard::setFullShip(const int x, const int y, const Direction dir, const
                 && getCell(x+i, y)->getStat() == EMPTY) {
                 mas.push_back(getCell(x+i, y));
             } else return 0;
-        }         
+        }
     }
     shared_ptr<Ship> buf = NewShip[size-1](mas);
     
     if (checkCellsAroundShip(buf)) {
-        return addShipAtList(buf);    
+        drowAroundShip(buf);
+        return addShipAtList(buf);
     } else return 0;
 }
 
 bool GameBoard::mergeShip(shared_ptr<Ship> &oldSh, shared_ptr<Ship> &newSh) {
     if (oldSh) {
-        if (oldSh->checkFill() || !newSh->addCells(oldSh->getCells())) {
+        if (oldSh->getSize() != newSh->getSize() || 
+            oldSh->getCells().size() + newSh->getCells().size() > newSh->getSize() ||
+            !newSh->addCells(oldSh->getCells())) {
             cout << "ERROR marge two ships!!!" << endl;
             return 0;
         }
@@ -180,6 +203,7 @@ bool GameBoard::setDeckShip(const int x, const int y, const int size) {
     if (mergeShip(getShip(x-1, y), bufSh) & mergeShip(getShip(x, y-1), bufSh) &
         mergeShip(getShip(x+1, y), bufSh) & mergeShip(getShip(x, y+1), bufSh)) {
             if (checkCellsAroundShip(bufSh)) {
+                if (bufSh->checkFull()) drowAroundShip(bufSh);
                 return addShipAtList(bufSh);    
             } else return 0;
     } else return 0;
@@ -187,7 +211,13 @@ bool GameBoard::setDeckShip(const int x, const int y, const int size) {
 
 bool GameBoard::delShip (const int x, const int y) {
     if (getShip(x, y)) {
-        return removeShipOfList(getShip(x, y));
+        if(!removeShipOfList(getShip(x, y))) return 0;
+        clear(); //т.к. карабль удалили, то и заполенение клеток вокуруг него тоже надо очистить
+        for (int i = 0; i < MAX_SIZE_SHIP; i++) { 
+            for (auto& it: getListShip(i)) {
+                drowAroundShip(it);
+            }
+        }
     } else return 0;
 }
 
@@ -234,13 +264,13 @@ bool GameBoard::checkFullBoard() const {
         BufShip = getListShip(i);
         if (BufShip.size() != _shipCount[i]) return 0; 
         for (auto& it: BufShip) {
-            if (!it->checkFill()) return 0;
+            if (!it->checkFull()) return 0;
         }
     }
     return 1;
 }
 
-//bool GameBoard::GenerateShip() {
-//    srand(clock()+time(0));
-//    return RankingShip(AMOUNT_GENERATION);
-//}
+bool GameBoard::generateShip() {
+    srand(clock()+time(0));
+    return rankingShip(AMOUNT_GENERATION);
+}

@@ -1,8 +1,8 @@
 #include "GameBoard.h"
 
 class Player {
-    GameBoard _MyBoard;
-    GameBoard _SecBoard;
+    GameBoard _myBoard;
+    GameBoard _secBoard;
     string    _nick;
 public:
     Player() {}
