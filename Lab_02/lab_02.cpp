@@ -69,18 +69,27 @@ int main(int argc, char** argv)
 
     Valid(board1);
     board1.print();
-    Valid(board1);
-    board1.print();
-    cout << "Del 4 deck ship..." << endl;
-    board1.delShip(7, 5);
-    board1.print();
+
     board1.clear();
     board1.print();
-    board1.reset();
-    board1.print();
+
     GameBoard board2;
-    board2.generateShip();
-    Valid(board2);
+    board2.print();
+    int x = 5, y = 5; 
+    board2.setStatShot(x, y, board1.getStatShot(x, y));
+    board1.print();
+    board2.print();
+    board2.setStatShot(x-1, y, board1.getStatShot(x-1, y));
+    board1.print();
+    board2.print();
+    board2.setStatShot(x+2, y, board1.getStatShot(x+2, y));
+    board1.print();
+    board2.print();
+    board2.setStatShot(x+1, y, board1.getStatShot(x+1, y));
+    board1.print();
+    board2.print();
+    board2.setStatShot(x+3, y, board1.getStatShot(x+3, y));
+    board1.print();
     board2.print();
     return 0;
 }

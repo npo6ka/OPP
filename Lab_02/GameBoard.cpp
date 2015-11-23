@@ -274,3 +274,30 @@ bool GameBoard::generateShip() {
     srand(clock()+time(0));
     return rankingShip(AMOUNT_GENERATION);
 }
+
+int GameBoard::getStatShot(const int x, const int y) {
+    shared_ptr<GameBoardCell> buf; 
+    if (!(buf = getCell(x, y))) return -2; // неверные координаты
+    if (buf->getStat()) return -1; //сюда уже стеряли 
+    buf->setStat(HIT);
+    if (!buf->getShip()) return 0; //корабля нет
+    if (buf->getShip()->checkDestShip()) drowAroundShip(buf->getShip()); //если все палубы корабля подстрелены, то обрисовать его
+    return buf->getShip()->getSize(); //возвращаем размер корабля
+}
+
+int GameBoard::setStatShot(const int x, const int y, const int stat) {
+    shared_ptr<GameBoardCell> buf = getCell(x, y);
+    if (!(buf = getCell(x, y))) return 0; //некорректные координаты
+    if (buf->getStat()) {
+        if (stat == -1) {
+            return 1;
+        } else return -1; //ассинхрон полей
+    }
+    if (!stat) {
+        buf->setStat(HIT);
+        return 1;
+    } else {
+        if (!setDeckShip(x, y, stat)) return -1; ////ассинхрон полей
+        buf->setStat(HIT);
+    }
+}

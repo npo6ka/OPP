@@ -45,6 +45,7 @@ public:
             
     bool checkShip(void);
     bool checkFull(void);
+    bool checkDestShip(void);
     void clearShip(void);
 };
 

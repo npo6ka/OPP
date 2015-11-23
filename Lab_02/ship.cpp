@@ -83,6 +83,12 @@ bool Ship::checkFull() {
         return 1;
     } else return 0;
 }
+bool Ship::checkDestShip() {
+    for (auto& it: getCells()) {
+        if (!it->getStat()) return 0;
+    }
+    return 1;
+}
 void Ship::clearShip() {
     for (auto& it: _bufCells) {
         it->clearCell();

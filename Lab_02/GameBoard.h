@@ -45,6 +45,8 @@ public:
 
     bool generateShip(void);
     
+    int getStatShot(const int, const int);
+    int setStatShot(const int, const int, const int);
 };
 
 #endif //GAMEBOARD_H
