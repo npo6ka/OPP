@@ -218,6 +218,7 @@ bool GameBoard::delShip (const int x, const int y) {
                 drowAroundShip(it);
             }
         }
+        return 1;
     } else return 0;
 }
 
@@ -270,14 +271,23 @@ bool GameBoard::checkFullBoard() const {
     return 1;
 }
 
-bool GameBoard::generateShip() {
-    srand(clock()+time(0));
+bool GameBoard::empty() {
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (getCell(i, j)->getStat() != EMPTY || getCell(i, j)->getShip() != nullptr) return 0;
+        }
+    }
+    return 1;
+}
+
+bool GameBoard::generateShips() {
+    srand(clock()+(unsigned int)time(0));
     return rankingShip(AMOUNT_GENERATION);
 }
 
 int GameBoard::getStatShot(const int x, const int y) {
-    shared_ptr<GameBoardCell> buf; 
-    if (!(buf = getCell(x, y))) return -2; // неверные координаты
+    shared_ptr<GameBoardCell> buf = getCell(x, y); 
+    if (!buf) return -2; // неверные координаты
     if (buf->getStat()) return -1; //сюда уже стеряли 
     buf->setStat(HIT);
     if (!buf->getShip()) return 0; //корабля нет
@@ -287,7 +297,7 @@ int GameBoard::getStatShot(const int x, const int y) {
 
 int GameBoard::setStatShot(const int x, const int y, const int stat) {
     shared_ptr<GameBoardCell> buf = getCell(x, y);
-    if (!(buf = getCell(x, y))) return 0; //некорректные координаты
+    if (!buf) return 0; //некорректные координаты
     if (buf->getStat()) {
         if (stat == -1) {
             return 1;
@@ -299,5 +309,6 @@ int GameBoard::setStatShot(const int x, const int y, const int stat) {
     } else {
         if (!setDeckShip(x, y, stat)) return -1; ////ассинхрон полей
         buf->setStat(HIT);
+        return 1;
     }
 }

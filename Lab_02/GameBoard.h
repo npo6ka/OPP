@@ -42,8 +42,9 @@ public:
     void reset(void);
     void clear(void);
     bool checkFullBoard(void) const;
+    bool empty(void);
 
-    bool generateShip(void);
+    bool generateShips(void);
     
     int getStatShot(const int, const int);
     int setStatShot(const int, const int, const int);

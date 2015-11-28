@@ -109,7 +109,7 @@ bool Ship1::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-int Ship1::getSize(void) const {
+unsigned int Ship1::getSize(void) const {
     return DECK1;
 }
 
@@ -125,7 +125,7 @@ bool Ship2::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-int Ship2::getSize(void) const{
+unsigned int Ship2::getSize(void) const{
     return DECK2;
 }
 
@@ -140,7 +140,7 @@ bool Ship3::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-int Ship3::getSize(void) const {
+unsigned int Ship3::getSize(void) const {
     return DECK3;
 }
 
@@ -155,7 +155,7 @@ bool Ship4::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-int Ship4::getSize(void) const {
+unsigned int Ship4::getSize(void) const {
     return DECK4;
 }
 

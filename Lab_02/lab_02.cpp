@@ -1,10 +1,10 @@
-#include "GameBoard.h"
+#include "Player.h"
+//#include "GameBoard.h"
 //#include "Ship.h"
-
 #include <deque>
 
 
-void Valid(const GameBoard const buf) {
+void Valid(const GameBoard buf) {
     if (buf.checkFullBoard()) {
         cout << "Board Valid!" << endl;
     } else  cout << "Board Not valid(" << endl;
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     shared_ptr<Ship> two (_board[5][2]->getShip());
 
     two->clearShip();*/
-
+    /* проверка поля
     GameBoard board1;
 
     board1.setFullShip(1, 1, HORIZONTAL, 3);
@@ -91,5 +91,22 @@ int main(int argc, char** argv)
     board2.setStatShot(x+3, y, board1.getStatShot(x+3, y));
     board1.print();
     board2.print();
+    */
+    PlayerComp buf;
+    PlayerUser use;
+    buf.changeNick("sdgdfgdfggd");
+    use.setShip(2,3,HORIZONTAL, 3);
+    use.setShip(6,6,VERTICAL, 1);
+    use.delShip(6, 6);
+    use.clearBoards();
+    use.getStatShot(2, 5);
+    use.getStatShot(1, 1);
+    use.resetBoards();
+    buf.autoSetShips();
+    buf.checkBoard();
+    buf.clearBoards();
+    buf.checkBoard();
+    buf.setStatShot(5, 4, 3);
+
     return 0;
 }
