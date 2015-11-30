@@ -187,7 +187,7 @@ bool GameBoard::setFullShip(const int x, const int y, const Direction dir, const
 bool GameBoard::mergeShip(shared_ptr<Ship> &oldSh, shared_ptr<Ship> &newSh) {
     if (oldSh) {
         if (oldSh->getSize() != newSh->getSize() || 
-            oldSh->getCells().size() + newSh->getCells().size() > newSh->getSize() ||
+            oldSh->getCells().size() + newSh->getCells().size() > (unsigned int)newSh->getSize() ||
             !newSh->addCells(oldSh->getCells())) {
             cout << "ERROR marge two ships!!!" << endl;
             return 0;

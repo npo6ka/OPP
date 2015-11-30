@@ -31,7 +31,7 @@ void Ship::sortCell() {
 }
 bool Ship::tryAddCell(list <shared_ptr<GameBoardCell>> cells) {
     _bufCells.splice(_bufCells.end(), cells); //совмещаем листы
-    if (_bufCells.size() >= 0 && _bufCells.size() <= getSize()) { //сумма €чеек не должна превышать размер карабл€
+    if (_bufCells.size() >= 0 && _bufCells.size() <= (unsigned int)getSize()) { //сумма €чеек не должна превышать размер карабл€
         if (_bufCells.size() == 1) return 1; //если однопалубник, всЄ проще
         if (resetDir() == UNK) return 0; //просчитываем новое направление карабл€ 
         sortCell();
@@ -109,7 +109,7 @@ bool Ship1::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-unsigned int Ship1::getSize(void) const {
+SizeShip Ship1::getSize(void) const {
     return DECK1;
 }
 
@@ -125,7 +125,7 @@ bool Ship2::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-unsigned int Ship2::getSize(void) const{
+SizeShip Ship2::getSize(void) const{
     return DECK2;
 }
 
@@ -140,7 +140,7 @@ bool Ship3::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-unsigned int Ship3::getSize(void) const {
+SizeShip Ship3::getSize(void) const {
     return DECK3;
 }
 
@@ -155,7 +155,7 @@ bool Ship4::addCells(list <shared_ptr<GameBoardCell>> cells) {
         return 0;
     } else return 1; 
 }
-unsigned int Ship4::getSize(void) const {
+SizeShip Ship4::getSize(void) const {
     return DECK4;
 }
 

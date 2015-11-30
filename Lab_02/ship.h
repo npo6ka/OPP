@@ -38,7 +38,7 @@ public:
     void setShipInCells();
     
     list<shared_ptr<GameBoardCell>> getCells(void) const;
-    virtual unsigned int getSize(void) const = 0;
+    virtual SizeShip getSize(void) const = 0;
     Direction getDir(void) const;
     int getX(void) const;
     int getY(void) const;
@@ -55,7 +55,7 @@ public:
     Ship1 (const list <shared_ptr<GameBoardCell>>);
     ~Ship1() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
-    unsigned int getSize(void) const;
+    SizeShip getSize(void) const;
 };
 
 class Ship2: public Ship {
@@ -64,7 +64,7 @@ public:
     Ship2 (const list <shared_ptr<GameBoardCell>>);
     ~Ship2() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
-    unsigned int getSize(void) const;
+    SizeShip getSize(void) const;
 };
 
 class Ship3: public Ship {
@@ -73,7 +73,7 @@ public:
     Ship3 (const list <shared_ptr<GameBoardCell>>);
     ~Ship3() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
-    unsigned int getSize(void) const;
+    SizeShip getSize(void) const;
 };
 
 class Ship4: public Ship {
@@ -82,7 +82,7 @@ public:
     Ship4 (const list <shared_ptr<GameBoardCell>>);
     ~Ship4() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
-    unsigned int getSize(void) const;
+    SizeShip getSize(void) const;
 };
 
 #endif //SHIP_H
