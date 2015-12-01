@@ -36,7 +36,7 @@ public:
     Ship ();
     virtual ~Ship(void);
 
-    virtual void drawShip(shared_ptr<Visitor>)= 0;
+    virtual void drawShip(shared_ptr<Visitor>, bool)= 0;
     virtual bool addCells(list <shared_ptr<GameBoardCell>> cells) = 0;
     void setShipInCells();
     
@@ -59,7 +59,7 @@ public:
     ~Ship1() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
-    void drawShip(shared_ptr<Visitor>);
+    void drawShip(shared_ptr<Visitor>, bool);
 };
 
 class Ship2: public Ship {
@@ -69,7 +69,7 @@ public:
     ~Ship2() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
-    void drawShip(shared_ptr<Visitor>);
+    void drawShip(shared_ptr<Visitor>, bool);
 };
 
 class Ship3: public Ship {
@@ -79,7 +79,7 @@ public:
     ~Ship3() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
-    void drawShip(shared_ptr<Visitor>);
+    void drawShip(shared_ptr<Visitor>, bool);
 };
 
 class Ship4: public Ship {
@@ -89,7 +89,7 @@ public:
     ~Ship4() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
-    void drawShip(shared_ptr<Visitor>);
+    void drawShip(shared_ptr<Visitor>, bool);
 };
 
 #endif //SHIP_H

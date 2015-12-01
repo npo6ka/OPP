@@ -6,7 +6,7 @@ class Game {
     vector<shared_ptr<Player>> _players;
 public:
     Game(const int, const int);
-    ~Game();
+    ~Game() {};
 
 
 };

@@ -6,6 +6,7 @@
 #include <deque>
 
 
+
 void Valid(const GameBoard buf) {
     if (buf.checkFullBoard()) {
         cout << "Board Valid!" << endl;
@@ -110,10 +111,20 @@ int main(int argc, char** argv)
     buf.checkBoard();
     buf.setStatShot(5, 4, 3);*/
     
-    shared_ptr<Visitor> vis (new Print());
+    /*shared_ptr<Visitor> vis (new Print());
     GameBoard board1;
     board1.generateShips();
-    board1.drawBoard(vis);
+    board1.getStatShot(0, 2);
+    board1.getStatShot(1, 2);
+    board1.getStatShot(2, 2);
+    board1.getStatShot(3, 2);
+    board1.getStatShot(4, 2);
+    board1.drawMyBoard(vis);
+    vis->PrintFrameForCmd();*/
+    string str;
+    int a,s,d;
+    //cin >> a >> s >> str >> d; 
+    
 
     return 0;
 }

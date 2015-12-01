@@ -94,17 +94,25 @@ GameBoard::GameBoard(const GameBoard &obj) {
     }
 }
 
-void GameBoard::drawBoard(shared_ptr<Visitor> vis) const {
+void GameBoard::drawBoard(shared_ptr<Visitor> vis, bool shift) const {
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
-            getCell(i, j)->drawCell(vis);
+            getCell(i, j)->drawCell(vis, shift);
         }
     }
     for (int i = 0; i < MAX_SIZE_SHIP; i++) {
         for (auto& it: getListShip(i)) {
-            it->drawShip(vis);
+            it->drawShip(vis, shift);
         }
     }
+}
+
+void GameBoard::drawMyBoard(shared_ptr<Visitor> vis) const {
+    drawBoard(vis, 1);
+}
+
+void GameBoard::drawOpBoard(shared_ptr<Visitor> vis) const {
+    drawBoard(vis, 0);
 }
 
 bool GameBoard::removeShipOfList(shared_ptr<Ship> const sh) {
@@ -119,6 +127,7 @@ bool GameBoard::removeShipOfList(shared_ptr<Ship> const sh) {
         return 1;
     } else return 0;
 }
+
 
 shared_ptr<Ship> NewShip1(list <shared_ptr<GameBoardCell>> buf) {
     return shared_ptr<Ship> (new Ship1(buf));
@@ -288,12 +297,12 @@ bool GameBoard::generateShips() {
 
 int GameBoard::getStatShot(const int x, const int y) {
     shared_ptr<GameBoardCell> buf = getCell(x, y); 
-    if (!buf) return -2; // неверные координаты
-    if (buf->getStat()) return -1; //сюда уже стеряли 
+    if (!buf) return INCOR_CORD; // неверные координаты
+    if (buf->getStat()) return BUSY; //сюда уже стеряли 
     buf->setStat(HIT);
-    if (!buf->getShip()) return 0; //корабля нет
+    if (!buf->getShip()) return MISS; //корабля нет
     if (buf->getShip()->checkDestShip()) drowAroundShip(buf->getShip()); //если все палубы корабля подстрелены, то обрисовать его
-    return buf->getShip()->getSize(); //возвращаем размер корабля
+    return SHIP + buf->getShip()->getSize(); //возвращаем размер корабля
 }
 
 int GameBoard::setStatShot(const int x, const int y, const int stat) {

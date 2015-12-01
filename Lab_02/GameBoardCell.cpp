@@ -11,8 +11,8 @@ GameBoardCell::GameBoardCell(const GameBoardCell &obj) {
     this->setStat(obj.getStat());
 }
 
-void GameBoardCell::drawCell(shared_ptr<Visitor> vis) {
-    vis->PrintCell(shared_from_this());
+void GameBoardCell::drawCell(shared_ptr<Visitor> vis, bool sh) {
+    vis->PrintCell(shared_from_this(), sh);
 }
 
 void GameBoardCell::setPos(const int x, const int y) {

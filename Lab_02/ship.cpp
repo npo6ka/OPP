@@ -1,5 +1,6 @@
 #include "Ship.h"
 #include "Visitor.h"
+#include "GameBoardCell.h"
 
 Ship::Ship (): _status(-1), _dir(UNK) {}
 Ship::~Ship() {
@@ -113,8 +114,8 @@ bool Ship1::addCells(list <shared_ptr<GameBoardCell>> cells) {
 SizeShip Ship1::getSize(void) const {
     return DECK1;
 }
-void Ship1::drawShip(shared_ptr<Visitor> vis) {
-    vis->PrintShip1(shared_from_this());
+void Ship1::drawShip(shared_ptr<Visitor> vis, bool sh) {
+    vis->PrintShip1(shared_from_this(), sh);
 }
 
 Ship2::Ship2 (): Ship() {}
@@ -131,8 +132,8 @@ bool Ship2::addCells(list <shared_ptr<GameBoardCell>> cells) {
 SizeShip Ship2::getSize(void) const{
     return DECK2;
 }
-void Ship2::drawShip(shared_ptr<Visitor> vis) {
-    vis->PrintShip2(shared_from_this());
+void Ship2::drawShip(shared_ptr<Visitor> vis, bool sh) {
+    vis->PrintShip2(shared_from_this(), sh);
 }
 
 Ship3::Ship3 (): Ship() {}
@@ -149,8 +150,8 @@ bool Ship3::addCells(list <shared_ptr<GameBoardCell>> cells) {
 SizeShip Ship3::getSize(void) const {
     return DECK3;
 }
-void Ship3::drawShip(shared_ptr<Visitor> vis) {
-    vis->PrintShip3(shared_from_this());
+void Ship3::drawShip(shared_ptr<Visitor> vis, bool sh) {
+    vis->PrintShip3(shared_from_this(), sh);
 }
 
 Ship4::Ship4 (): Ship() {}
@@ -167,7 +168,7 @@ bool Ship4::addCells(list <shared_ptr<GameBoardCell>> cells) {
 SizeShip Ship4::getSize(void) const {
     return DECK4;
 }
-void Ship4::drawShip(shared_ptr<Visitor> vis) {
-    vis->PrintShip4(shared_from_this());
+void Ship4::drawShip(shared_ptr<Visitor> vis, bool sh) {
+    vis->PrintShip4(shared_from_this(), sh);
 }
 

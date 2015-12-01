@@ -14,6 +14,13 @@ class Visitor;
 #define OPTIMAZE (BOARD_SIZE % 3? 3: (BOARD_SIZE % 2? 2: 1))
 #define AMOUNT_GENERATION 100
 
+enum statShot{
+    INCOR_CORD,
+    BUSY,
+    MISS,
+    SHIP
+};
+
 class GameBoard {
     static const int _shipCount[MAX_SIZE_SHIP];
     shared_ptr<GameBoardCell> _board[BOARD_SIZE][BOARD_SIZE];
@@ -29,13 +36,15 @@ class GameBoard {
     bool removeShipOfList(shared_ptr<Ship> const);
     bool rankingShip(int const);
     bool mergeShip(shared_ptr<Ship> &, shared_ptr<Ship> &);
+    void drawBoard(shared_ptr<Visitor> vis, bool) const;
 
 public:
     GameBoard(void);
     ~GameBoard(void);
     GameBoard(const GameBoard &);
 
-    void drawBoard(shared_ptr<Visitor> vis) const;
+    void drawMyBoard(shared_ptr<Visitor>) const;
+    void drawOpBoard(shared_ptr<Visitor>) const;
 
     void drowAroundShip(shared_ptr<Ship> const);
     bool setFullShip(const int, const int, const Direction, const int);

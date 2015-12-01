@@ -23,7 +23,7 @@ public:
     GameBoardCell(int, int);
     ~GameBoardCell(void);
     GameBoardCell(const GameBoardCell &);
-    void drawCell(shared_ptr<Visitor>);
+    void drawCell(shared_ptr<Visitor>, bool);
     void setPos(const int, const int);
     void setStat (const Stat);
     void setShip (shared_ptr<Ship> const);
