@@ -94,16 +94,17 @@ GameBoard::GameBoard(const GameBoard &obj) {
     }
 }
 
-void GameBoard::print() const {
+void GameBoard::drawBoard(shared_ptr<Visitor> vis) const {
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
-            if (getShip(i, j)) {
-                cout << getShip(i, j)->getSize()+1;
-            } else cout << getCell(i, j)->getStat();
+            getCell(i, j)->drawCell(vis);
         }
-        cout << endl;
     }
-    cout << endl;
+    for (int i = 0; i < MAX_SIZE_SHIP; i++) {
+        for (auto& it: getListShip(i)) {
+            it->drawShip(vis);
+        }
+    }
 }
 
 bool GameBoard::removeShipOfList(shared_ptr<Ship> const sh) {

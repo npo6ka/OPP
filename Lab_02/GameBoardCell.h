@@ -5,6 +5,8 @@
  
 using namespace std;
 
+class Visitor;
+
 enum Stat{
     EMPTY   = 0,
     HIT    = 1,
@@ -12,7 +14,7 @@ enum Stat{
 
 class Ship;
 
-class GameBoardCell {
+class GameBoardCell: public enable_shared_from_this<GameBoardCell> {
     Stat  _state;
 	weak_ptr<Ship> _sh;
     int   _x;
@@ -21,6 +23,7 @@ public:
     GameBoardCell(int, int);
     ~GameBoardCell(void);
     GameBoardCell(const GameBoardCell &);
+    void drawCell(shared_ptr<Visitor>);
     void setPos(const int, const int);
     void setStat (const Stat);
     void setShip (shared_ptr<Ship> const);

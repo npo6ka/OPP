@@ -1,4 +1,6 @@
-#include "Player.h"
+//#include "Player.h"
+#include "Visitor.h"
+
 //#include "GameBoard.h"
 //#include "Ship.h"
 #include <deque>
@@ -92,7 +94,7 @@ int main(int argc, char** argv)
     board1.print();
     board2.print();
     */
-    PlayerComp buf;
+    /*PlayerComp buf;
     PlayerUser use;
     buf.changeNick("sdgdfgdfggd");
     use.setShip(2,3,HORIZONTAL, 3);
@@ -106,7 +108,12 @@ int main(int argc, char** argv)
     buf.checkBoard();
     buf.clearBoards();
     buf.checkBoard();
-    buf.setStatShot(5, 4, 3);
+    buf.setStatShot(5, 4, 3);*/
+    
+    shared_ptr<Visitor> vis (new Print());
+    GameBoard board1;
+    board1.generateShips();
+    board1.drawBoard(vis);
 
     return 0;
 }

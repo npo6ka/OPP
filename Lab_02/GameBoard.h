@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <time.h>
 
+class Visitor;
+
 #define BOARD_SIZE 10
 #define OPTIMAZE (BOARD_SIZE % 3? 3: (BOARD_SIZE % 2? 2: 1))
 #define AMOUNT_GENERATION 100
@@ -33,7 +35,7 @@ public:
     ~GameBoard(void);
     GameBoard(const GameBoard &);
 
-    void print(void) const;
+    void drawBoard(shared_ptr<Visitor> vis) const;
 
     void drowAroundShip(shared_ptr<Ship> const);
     bool setFullShip(const int, const int, const Direction, const int);

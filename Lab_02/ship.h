@@ -7,6 +7,8 @@
 
 #define MAX_SIZE_SHIP 4
 
+class Visitor;
+
 enum SizeShip{
     DECK1 = 1,
     DECK2 = 2,
@@ -34,6 +36,7 @@ public:
     Ship ();
     virtual ~Ship(void);
 
+    virtual void drawShip(shared_ptr<Visitor>)= 0;
     virtual bool addCells(list <shared_ptr<GameBoardCell>> cells) = 0;
     void setShipInCells();
     
@@ -56,6 +59,7 @@ public:
     ~Ship1() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
+    void drawShip(shared_ptr<Visitor>);
 };
 
 class Ship2: public Ship {
@@ -65,6 +69,7 @@ public:
     ~Ship2() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
+    void drawShip(shared_ptr<Visitor>);
 };
 
 class Ship3: public Ship {
@@ -74,6 +79,7 @@ public:
     ~Ship3() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
+    void drawShip(shared_ptr<Visitor>);
 };
 
 class Ship4: public Ship {
@@ -83,6 +89,7 @@ public:
     ~Ship4() {}
     bool addCells(list <shared_ptr<GameBoardCell>>);
     SizeShip getSize(void) const;
+    void drawShip(shared_ptr<Visitor>);
 };
 
 #endif //SHIP_H
